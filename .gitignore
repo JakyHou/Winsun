@@ -1,4 +1,4 @@
-.ino~
-.un~
-.bak
-.swp
+*.ino~
+*.un~
+*.bak
+*.swp
