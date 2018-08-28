@@ -12,8 +12,8 @@
 //#include <stringz.h>
 /*******************************PinMap***************************************
 
-pinName         pinTo
-0               RXD
+pinName         pinTo           v3
+0               RXD             
 1               TXD
 2               DC      8
 3               CS      9
@@ -125,8 +125,8 @@ Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
 #define Z_STEPDN HIGH
 
 // Stepper speeds in RPM
-#define Z_MAXSPEED 120
-#define Z_MINSPEED 50
+#define Z_MAXSPEED 130
+#define Z_MINSPEED 30
 #define Z_NORMALSPD 120
 #define Z_RESETSPD 120
 
