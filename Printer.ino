@@ -125,7 +125,7 @@ Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
 #define Z_STEPDN HIGH
 
 // Stepper speeds in RPM
-#define Z_MAXSPEED 130
+#define Z_MAXSPEED 200
 #define Z_MINSPEED 30
 #define Z_NORMALSPD 120
 #define Z_RESETSPD 120
@@ -522,7 +522,7 @@ void serialEvent()
                         case 'k': // Set Print Cycle Raise Speed
                         case 'K':
                                 i = SerialReadInt();
-                                if (i >= 50 && i <= 130)
+                                if (i >= Z_MINSPEED && i <= Z_MAXSPEED)
                                 {
                                         // float dPercent = (float)i/100.0;
                                         //float dRange = Z_MAXSPEED - Z_MINSPEED;
@@ -540,7 +540,7 @@ void serialEvent()
                         case 'l': // Set Print Cycle Lower Speed
                         case 'L':
                                 i = SerialReadInt();
-                                if (i >= 50 && i <= 130)
+                                if (i > Z_MINSPEED && i <= Z_MAXSPEED)
                                 {
                                         //float dPercent = (float)i/100.0;
                                         //float dRange = Z_MAXSPEED - Z_MINSPEED;
@@ -946,12 +946,6 @@ void setupIO()
         pinMode(Z_MS3, OUTPUT);
 }
 
-// void projectorRxChange()
-// {
-//         cli();
-//         projectorSerial.do_interrupt();
-//         sei();
-// }
 
 ///////////////////////////////////////////////////////
 //
@@ -1161,24 +1155,7 @@ int SerialReadInt()
                                 break;
                         }
                         i++;
-                        // Yes, we have!
-                        // Store it at next position in string:
-                        // str[i] = Serial.read();
-
-                        // If it is newline or we find a variable separator, then terminate the string
-                        // and leave the otherwise infinite loop:
-                        // if (str[i] == '\n' || str[i] == '\0' || i == 31)
-                        // {
-                        //         str[i] = '\0';
-                        //         break;
-                        // }
-                        // // Ok, we were not at the end of the string, go on with next:
-                        // else
-                        // {
-                        //         i++;
-                        // }
-                        
-                                
+                                   
                 }
                 
         }
@@ -1204,6 +1181,7 @@ int SerialReadInt()
                Display_logic("Layer:"+current_layer+"\n"+"TimeRemaining:"+time_left,1);
 
         }
+
 
         return (atoi(str));
 }
@@ -1245,132 +1223,7 @@ void HandleTimedBroadcasts()
         }
 }
 
-//////////////////////////////////////////////////////////////
-//
-// Handle the automated projectors communications
-//  Keep iProjectorPwr and iLampHours updatedDLPC350
-// void HandleProjectorComm_Vivitek_D535()
-// {
 
-//         if (millis() - ulLastProjectorMsgRcvdTime > ulLastProjectorMsgRcvdTime)
-//         {
-//                 //it's been 15 sec since we've heard from the projector!
-//                 //set power unknown and reset connection
-//                 bFirstProjectorQuery = true;
-//                 iProjectorPwr = -1;
-//                 iLampHours = -1;
-//                 projectorSerial.end();
-//                 projectorSerial.begin(9600);
-//                 //    projectorSerial.write("~qP\r");  // Transmit Power status query
-//                 projectorSerial.write("\r$pow=?#\r");
-//                 // projectorSerial.write("\r$ltim=?#\r");
-//                 ulLastProjectorMsgRcvdTime = millis();
-//                 return;
-//         }
-
-//         if (!projectorSerial.available())
-//         {
-//                 if (iProjectorPwr < 0 || millis() - ulLastProjectorQueryTime > 5000)
-//                 { // 5 second intervals
-//                         // Time to ask if the projector is on...
-//                         ulLastProjectorQueryTime = millis();
-//                         if (bFirstProjectorQuery)
-//                         {
-//                                 iProjectorPwr = 0;
-//                                 bFirstProjectorQuery = false;
-//                         }
-//                         projectorSerial.write("\r$pow=?#\r"); // Transmit Power status query
-//                         //projectorSerial.write("\r$ltim=?#\r");
-//                 }
-//                 return;
-//         }
-//         ulLastProjectorMsgRcvdTime = millis();
-
-//         // Handle the projector's transmission
-//         String sData;
-//         char c;
-//         while (projectorSerial.available() > 0)
-//         {
-//                 // Yes, we have data available
-//                 c = projectorSerial.read();
-//                 // If it is newline or we find a variable separator, then terminate
-//                 // and leave the otherwise infinite loop, otherwise add it to sData
-//                 if (c == '\r' || c == '\n' || c == '\0')
-//                         break;
-//                 else
-//                         sData += String(c);
-//         }
-//         // BC_C(F("Projector's returen date is : "), String(sData ));
-//         if (sData == "$POW=OFF#")
-//         {
-//                 iProjectorPwr = 0;
-//                 bProjectorNeedsReset = true;
-//         }
-//         else if (sData == "$POW=ON#")
-//         {
-//                 iProjectorPwr = 1;
-//                 //projectorSerial.write("~qL\r"); // Transmit Lamp hours query
-//         }
-
-//         else if (sData == "p" || sData == "P")
-//         {
-//                 sData = ""; //ignore the "P" response
-//         }
-//         else
-//         {
-//                 char str[65];
-//                 sData.toCharArray(str, 64);
-//                 int iH = atoi(str);
-//                 if (iH >= 0 && iH < 100000 && iH >= iLampHours)
-//                         iLampHours = iH;
-//                 iLampHours = 10000;
-//         }
-// }
-
-// void projectorReset()
-// {
-//         if (bProjectorNeedsReset)
-//         {
-//                 bProjectorNeedsReset = false;
-//                 //projectorSerial.write("~rM\r");   //MENU
-//                 projectorSerial.write("\r$menu=on#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rL\r");   //LEFT
-//                 projectorSerial.write("\r$left#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN1
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN2
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN3
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN4
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN5
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN6
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //projectorSerial.write("~rD\r");   //DOWN7
-//                 projectorSerial.write("\r$down#\r");
-//                 delay(100);
-//                 //    projectorSerial.write("~rR\r");   //RIGHT
-//                 projectorSerial.write("\r$right#\r");
-//                 delay(1000);
-
-//                 projectorSerial.write("\r$bri=+#\r");
-//                 projectorSerial.write("\r$con=+#\r");
-//                 projectorSerial.write("\r$color=+#\r");
-//         }
-// }
-
-//////////////////////////////////////////////////////////////
-//
 void loadEEPromSettings()
 {
         int schema;
