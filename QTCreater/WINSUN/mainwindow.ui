@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1214</width>
+    <height>902</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>500</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Nepho3d_Studio</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="WINSUN">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="WorldViewContext"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1214</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="toolTip">
+     <string>文件</string>
+    </property>
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuPrinter">
+     <property name="title">
+      <string>Printer</string>
+     </property>
+     <addaction name="actionModel_1"/>
+     <addaction name="actionModel_2"/>
+    </widget>
+    <addaction name="actionNew_Project"/>
+    <addaction name="actionOpen_Project"/>
+    <addaction name="actionSave"/>
+    <addaction name="actionSave_As"/>
+    <addaction name="separator"/>
+    <addaction name="actionPrint"/>
+    <addaction name="menuPrinter"/>
+    <addaction name="separator"/>
+    <addaction name="actionExportSlice"/>
+    <addaction name="actionExport_stl"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="toolTip">
+     <string>编辑</string>
+    </property>
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionAdd_Model"/>
+    <addaction name="actionDelete"/>
+    <addaction name="actionDuplicate"/>
+    <addaction name="separator"/>
+    <addaction name="actionRotate"/>
+    <addaction name="actionMove"/>
+    <addaction name="actionScale"/>
+    <addaction name="actionDrop_To_Floor"/>
+    <addaction name="separator"/>
+    <addaction name="actionSupport"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="toolTip">
+     <string>视图</string>
+    </property>
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="actionTop_View"/>
+    <addaction name="actionBottom_View"/>
+    <addaction name="actionLeft_View"/>
+    <addaction name="actionRight_View"/>
+    <addaction name="actionFront_View"/>
+    <addaction name="actionBack_View"/>
+   </widget>
+   <widget class="QMenu" name="menuSlice">
+    <property name="toolTip">
+     <string>切片</string>
+    </property>
+    <property name="title">
+     <string>Slice</string>
+    </property>
+    <addaction name="slice"/>
+    <addaction name="showSlices"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="title">
+      <string>Language</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionEnglish"/>
+     <addaction name="actionChinese"/>
+    </widget>
+    <addaction name="actionTerminal"/>
+    <addaction name="actionOption"/>
+    <addaction name="separator"/>
+    <addaction name="menuLanguage"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuView"/>
+   <addaction name="menuSlice"/>
+   <addaction name="menuTools"/>
+  </widget>
+  <action name="actionNew_Project">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/new.png</normaloff>:/B9Edit/icons/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>新建</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOpen_Project">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/open.png</normaloff>:/B9Edit/icons/open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Open(.nstl)</string>
+   </property>
+   <property name="toolTip">
+    <string>打开</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/save.png</normaloff>:/B9Edit/icons/save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save(.nstl)</string>
+   </property>
+   <property name="toolTip">
+    <string>保存</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionAdd_Model">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/add.png</normaloff>:/B9Edit/icons/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add Model(.stl)</string>
+   </property>
+   <property name="toolTip">
+    <string>添加模型</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/delete.png</normaloff>:/B9Edit/icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete Model</string>
+   </property>
+   <property name="toolTip">
+    <string>删除模型</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionDuplicate">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/copy.png</normaloff>:/B9Edit/icons/copy.png</iconset>
+   </property>
+   <property name="text">
+    <string>Duplicate Model</string>
+   </property>
+   <property name="toolTip">
+    <string>复制模型</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionCenter_View">
+   <property name="text">
+    <string>Center</string>
+   </property>
+   <property name="toolTip">
+    <string>中央</string>
+   </property>
+  </action>
+  <action name="actionTop_View">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/top.png</normaloff>:/B9Edit/icons/top.png</iconset>
+   </property>
+   <property name="text">
+    <string>Top</string>
+   </property>
+   <property name="toolTip">
+    <string>顶部</string>
+   </property>
+  </action>
+  <action name="actionBottom_View">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/bottom.png</normaloff>:/B9Edit/icons/bottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>Bottom</string>
+   </property>
+   <property name="toolTip">
+    <string>底部</string>
+   </property>
+  </action>
+  <action name="actionLeft_View">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/left.png</normaloff>:/B9Edit/icons/left.png</iconset>
+   </property>
+   <property name="text">
+    <string>Left</string>
+   </property>
+   <property name="toolTip">
+    <string>左侧</string>
+   </property>
+  </action>
+  <action name="actionRight_View">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/right.png</normaloff>:/B9Edit/icons/right.png</iconset>
+   </property>
+   <property name="text">
+    <string>Right</string>
+   </property>
+   <property name="toolTip">
+    <string>右侧</string>
+   </property>
+  </action>
+  <action name="actionFront_View">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/front.png</normaloff>:/B9Edit/icons/front.png</iconset>
+   </property>
+   <property name="text">
+    <string>Front</string>
+   </property>
+   <property name="toolTip">
+    <string>前面</string>
+   </property>
+  </action>
+  <action name="actionBack_View">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/back.png</normaloff>:/B9Edit/icons/back.png</iconset>
+   </property>
+   <property name="text">
+    <string>Back</string>
+   </property>
+   <property name="toolTip">
+    <string>后面</string>
+   </property>
+  </action>
+  <action name="actionRotate">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/rotate.png</normaloff>:/B9Edit/icons/rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ratate</string>
+   </property>
+   <property name="toolTip">
+    <string>旋转</string>
+   </property>
+  </action>
+  <action name="actionMove">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/move.png</normaloff>:/B9Edit/icons/move.png</iconset>
+   </property>
+   <property name="text">
+    <string>Move</string>
+   </property>
+   <property name="toolTip">
+    <string>平移</string>
+   </property>
+  </action>
+  <action name="actionScale">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/scale.png</normaloff>:/B9Edit/icons/scale.png</iconset>
+   </property>
+   <property name="text">
+    <string>Scale</string>
+   </property>
+   <property name="toolTip">
+    <string>缩放</string>
+   </property>
+  </action>
+  <action name="Support_Add_Supports_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/add.png</normaloff>:/B9Edit/icons/add.png</iconset>
+   </property>
+   <property name="text">
+    <string>添加支撑</string>
+   </property>
+  </action>
+  <action name="Support_Delete_Supports_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/delete.png</normaloff>:/B9Edit/icons/delete.png</iconset>
+   </property>
+   <property name="text">
+    <string>删除支撑</string>
+   </property>
+  </action>
+  <action name="slice">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/preview.png</normaloff>:/B9Edit/icons/preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Slice</string>
+   </property>
+   <property name="toolTip">
+    <string>查看切片</string>
+   </property>
+  </action>
+  <action name="materialCatalog">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>材料设置</string>
+   </property>
+  </action>
+  <action name="cyclePrintSetting">
+   <property name="text">
+    <string>循环打印设置</string>
+   </property>
+  </action>
+  <action name="terminal">
+   <property name="text">
+    <string>终端操作</string>
+   </property>
+  </action>
+  <action name="openProjector">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>打开投影仪</string>
+   </property>
+  </action>
+  <action name="buildSpace">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>显示器设置</string>
+   </property>
+  </action>
+  <action name="Foundation_action">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>地基</string>
+   </property>
+  </action>
+  <action name="SupportSettings_action">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>设置</string>
+   </property>
+  </action>
+  <action name="Support_Reset_Light_button">
+   <property name="text">
+    <string>小号</string>
+   </property>
+  </action>
+  <action name="Support_Reset_Medium_button">
+   <property name="text">
+    <string>中号</string>
+   </property>
+  </action>
+  <action name="Support_Reset_Heavy_button">
+   <property name="text">
+    <string>大号</string>
+   </property>
+  </action>
+  <action name="otherSupport">
+   <property name="text">
+    <string>其他型号</string>
+   </property>
+  </action>
+  <action name="showSlices">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/slice.png</normaloff>:/B9Edit/icons/slice.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show Slice</string>
+   </property>
+   <property name="toolTip">
+    <string>切片</string>
+   </property>
+  </action>
+  <action name="actionSave_As">
+   <property name="text">
+    <string>Save As(.nstl)</string>
+   </property>
+   <property name="toolTip">
+    <string>另存为</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>导出</string>
+   </property>
+  </action>
+  <action name="actionDrop_To_Floor">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/drop.PNG</normaloff>:/B9Edit/icons/drop.PNG</iconset>
+   </property>
+   <property name="text">
+    <string>Drop to Floor</string>
+   </property>
+   <property name="toolTip">
+    <string>落底</string>
+   </property>
+  </action>
+  <action name="RemoveAllSupports_action">
+   <property name="text">
+    <string>清空支撑</string>
+   </property>
+  </action>
+  <action name="actionPrint">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/print.png</normaloff>:/B9Edit/icons/print.png</iconset>
+   </property>
+   <property name="text">
+    <string>Print</string>
+   </property>
+   <property name="toolTip">
+    <string>打印</string>
+   </property>
+  </action>
+  <action name="actionTerminal">
+   <property name="text">
+    <string>Terminal</string>
+   </property>
+  </action>
+  <action name="actionModel_1">
+   <property name="text">
+    <string>M50</string>
+   </property>
+  </action>
+  <action name="actionModel_2">
+   <property name="text">
+    <string>M100</string>
+   </property>
+   <property name="iconText">
+    <string>M100（128x80）</string>
+   </property>
+  </action>
+  <action name="actionSupport">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/support.png</normaloff>:/B9Edit/icons/support.png</iconset>
+   </property>
+   <property name="text">
+    <string>Support</string>
+   </property>
+   <property name="toolTip">
+    <string>支撑</string>
+   </property>
+  </action>
+  <action name="actionExportSlice">
+   <property name="text">
+    <string>Export(.n3d)</string>
+   </property>
+  </action>
+  <action name="actionOption">
+   <property name="icon">
+    <iconset resource="edit/edit.qrc">
+     <normaloff>:/B9Edit/icons/setting.png</normaloff>:/B9Edit/icons/setting.png</iconset>
+   </property>
+   <property name="text">
+    <string>Printer Option</string>
+   </property>
+  </action>
+  <action name="actionExport_stl">
+   <property name="text">
+    <string>Export(.stl)</string>
+   </property>
+  </action>
+  <action name="actionShow_3D_Model">
+   <property name="text">
+    <string>Show 3D Model</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="actionChinese">
+   <property name="text">
+    <string>Chinese</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="edit/edit.qrc"/>
+ </resources>
+ <connections/>
+ <slots>
+  <slot>OnBasePlatePropertiesChanged()</slot>
+  <slot>SetSupportMode(bool)</slot>
+  <slot>SetToolModelMove()</slot>
+  <slot>SetToolModelSpin()</slot>
+  <slot>SetToolModelOrientate()</slot>
+  <slot>SetToolModelScale()</slot>
+  <slot>SetToolSupportAdd()</slot>
+  <slot>SetToolSupportDelete()</slot>
+  <slot>DropSelectionToFloor()</slot>
+ </slots>
+</ui>
