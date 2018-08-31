@@ -12,27 +12,27 @@
 //#include <stringz.h>
 /*******************************PinMap***************************************
 
-pinName         pinTo           v3
-0               RXD             
-1               TXD
-2               DC      8
-3               CS      9
-4               DIR
-5               STP
-6               MS3
-7               MS2
-8               MS1
-9               EN
-10              
-11              MOSI
-12              MISO
-13              SCK
-A0              OLED_RESET
-A1              Z_HOME
-A2              M_UP
-A3              M_DOWN
-A4              SDA
-A5              SCL
+pinName         pinTo           Rev1
+0               RXD             NA
+1               TXD             NA
+2               DC       	x_motor DIR
+3               CS       	x_motor STP
+4               DIR		motor ENABLE
+5               STP		z_motor STP	
+6               MS3		z_motor DIR
+7               MS2		x_SENSER	
+8               MS1		z_SENSER
+9               EN		CS
+10				  		DC
+11              MOSI		RES
+12              MISO		MOSI
+13              SCK		SCK
+A0              OLED_RESET	B_DOWN	
+A1              Z_HOME		B_UP
+A2              M_UP		B_LEFT
+A3              M_DOWN		B_RIGHT
+A4              SDA		SDA
+A5              SCL		SCL
 **********************************************************************************/
 /*****************Commands definition*******************************************
  * A Request Acknowledgement
@@ -79,35 +79,35 @@ A5              SCL
 
 // Optical sensor inputs
 //#define X_HOME    A0  //18
-#define Z_HOME A3 //19
+#define Z_HOME 8 //19
 //define slider INIT_DONE
-#define INIT_DOWN 10
+// #define INIT_DOWN 10
 // Manual Toggle switch inputs
-#define B_UP A2   //20
-#define B_DOWN A1 //21
+#define B_UP A1   //20
+#define B_DOWN A0 //21
 // defines
-// #define OLED_MOSI   11
-// #define OLED_CLK   13
-// #define OLED_DC    2
-// #define OLED_CS    3
-// #define OLED_RESET A3
-// Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+#define OLED_MOSI   12
+#define OLED_CLK   13
+#define OLED_DC    10
+#define OLED_CS    9
+#define OLED_RESET 11
+Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
-#define OLED_DC 8
-#define OLED_CS 9
-#define OLED_RESET A0
-Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
+// #define OLED_DC 8
+// #define OLED_CS 9
+// #define OLED_RESET A0
+// Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
 
 #if (SSD1306_LCDHEIGHT != 32)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 // Stepper Motor Outputs
-#define Z_ENABLE 5
-#define Z_MS1 2
-#define Z_MS2 4
-#define Z_MS3 3
-#define Z_STEP 6
-#define Z_DIR 7
+#define M_ENABLE 4
+// #define Z_MS1 2
+// #define Z_MS2 4
+// #define Z_MS3 3
+#define Z_STEP 5
+#define Z_DIR 6
 
 // Projector's RS-232 Port I/O pins
 // #define PROJECTOR_RX 12
@@ -292,7 +292,7 @@ void setup()
         // attach the motor intrupt service routine here
         Timer1.attachInterrupt(updateMotors);
         setZSpeed(iZDriveSpeedCmd);
-        setZStepMode(Z_STEP_HALF);
+        // setZStepMode(Z_STEP_HALF);
         ZStepRelease();
 
         // Read EEPROM stored settings
@@ -309,10 +309,6 @@ void setup()
         BC_R(); // Reset Status
 
 
-#define OLED_DC 2
-#define OLED_CS 3
-#define OLED_RESET A0
-        Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
 
 #if (SSD1306_LCDHEIGHT != 32)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
@@ -922,7 +918,7 @@ void HandleBuildCycles()
 // Initialize the IO parameters
 void setupIO()
 {
-        pinMode(INIT_DOWN, INPUT_PULLUP);
+        // pinMode(INIT_DOWN, INPUT_PULLUP);
 
         // Projector RS-232 serial I/O
         // pinMode(PROJECTOR_RX, INPUT);
@@ -935,15 +931,16 @@ void setupIO()
         // digitalWrite(B_UP, HIGH);   // Set pull up resistor
 
         pinMode(Z_HOME, INPUT_PULLUP);     // Z = zero sensor
-        pinMode(OLED_RESET, OUTPUT);     // Z = zero sensor
+        // pinMode(OLED_RESET, OUTPUT);     // Z = zero sensor
         // digitalWrite(Z_HOME, HIGH); // Set pull up resistor
 
-        pinMode(Z_ENABLE, OUTPUT);
+        pinMode(M_ENABLE, OUTPUT);
         pinMode(Z_STEP, OUTPUT);
         pinMode(Z_DIR, OUTPUT);
-        pinMode(Z_MS1, OUTPUT);
-        pinMode(Z_MS2, OUTPUT);
-        pinMode(Z_MS3, OUTPUT);
+
+        // pinMode(Z_MS1, OUTPUT);
+        // pinMode(Z_MS2, OUTPUT);
+        // pinMode(Z_MS3, OUTPUT);
 }
 
 
@@ -1013,12 +1010,12 @@ void updateMotors()
 {
         if (iCurPos > iTargetPos) // We need to head down, -Z
         {
-                digitalWrite(Z_ENABLE, LOW);
+                digitalWrite(M_ENABLE, LOW);
                 ZStep(Z_STEPDN);
         }
         else if (iCurPos < iTargetPos) // We need to head up, +Z
         {
-                digitalWrite(Z_ENABLE, LOW);
+                digitalWrite(M_ENABLE, LOW);
                 ZStep(Z_STEPUP);
         }
         else if ((iCurPos == iTargetPos) && (iZStatus == Z_MOVING))
@@ -1046,7 +1043,7 @@ void setZSpeed(int iRPM)
 void ZStepRelease()
 {
         //while(lastStepPulse==HIGH){delay(1);} // wait until step LOW
-        digitalWrite(Z_ENABLE, HIGH);
+        digitalWrite(M_ENABLE, HIGH);
         digitalWrite(Z_DIR, LOW);
         digitalWrite(Z_STEP, LOW);
         lastStepPulse = LOW;
@@ -1061,14 +1058,14 @@ void ZStep(int iDir)
         if (lastStepPulse == LOW)
         {
                 digitalWrite(Z_DIR, iDir);
-                digitalWrite(Z_ENABLE, LOW);
+                digitalWrite(M_ENABLE, LOW);
                 digitalWrite(Z_STEP, HIGH);
                 lastStepPulse = HIGH;
         }
         else
         {
                 digitalWrite(Z_DIR, iDir);
-                digitalWrite(Z_ENABLE, LOW);
+                digitalWrite(M_ENABLE, LOW);
                 digitalWrite(Z_STEP, LOW);
                 lastStepPulse = LOW;
                 if (iDir == Z_STEPDN)
@@ -1083,38 +1080,38 @@ void ZStep(int iDir)
 // Set the Z Stepper mode
 //
 
-void setZStepMode(int iMode)
-{
-        switch (iMode)
-        {
-                default:
-                case Z_STEP_FULL:
-                        digitalWrite(Z_MS1, LOW);
-                        digitalWrite(Z_MS2, LOW);
-                        digitalWrite(Z_MS3, LOW);
-                        break;
-                case Z_STEP_HALF:
-                        digitalWrite(Z_MS1, HIGH);
-                        digitalWrite(Z_MS2, LOW);
-                        digitalWrite(Z_MS3, LOW);
-                        break;
-                case Z_STEP_QTR:
-                        digitalWrite(Z_MS1, LOW);
-                        digitalWrite(Z_MS2, HIGH);
-                        digitalWrite(Z_MS3, LOW);
-                        break;
-                case Z_STEP_8TH:
-                        digitalWrite(Z_MS1, HIGH);
-                        digitalWrite(Z_MS2, HIGH);
-                        digitalWrite(Z_MS3, LOW);
-                        break;
-                case Z_STEP_16TH:
-                        digitalWrite(Z_MS1, HIGH);
-                        digitalWrite(Z_MS2, HIGH);
-                        digitalWrite(Z_MS3, HIGH);
-                        break;
-        }
-}
+// void setZStepMode(int iMode)
+// {
+//         switch (iMode)
+//         {
+//                 default:
+//                 case Z_STEP_FULL:
+//                         digitalWrite(Z_MS1, LOW);
+//                         digitalWrite(Z_MS2, LOW);
+//                         digitalWrite(Z_MS3, LOW);
+//                         break;
+//                 case Z_STEP_HALF:
+//                         digitalWrite(Z_MS1, HIGH);
+//                         digitalWrite(Z_MS2, LOW);
+//                         digitalWrite(Z_MS3, LOW);
+//                         break;
+//                 case Z_STEP_QTR:
+//                         digitalWrite(Z_MS1, LOW);
+//                         digitalWrite(Z_MS2, HIGH);
+//                         digitalWrite(Z_MS3, LOW);
+//                         break;
+//                 case Z_STEP_8TH:
+//                         digitalWrite(Z_MS1, HIGH);
+//                         digitalWrite(Z_MS2, HIGH);
+//                         digitalWrite(Z_MS3, LOW);
+//                         break;
+//                 case Z_STEP_16TH:
+//                         digitalWrite(Z_MS1, HIGH);
+//                         digitalWrite(Z_MS2, HIGH);
+//                         digitalWrite(Z_MS3, HIGH);
+//                         break;
+//         }
+// }
 
 ///////////////////////////////////////////////////////
 //
