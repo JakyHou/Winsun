@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/B9Edit">
+        <file>icons/edit.png</file>
+        <file>icons/importslices.png</file>
+        <file>icons/new.png</file>
+        <file>icons/open.png</file>
+        <file>icons/save.png</file>
+        <file>icons/crosshair.png</file>
+        <file>icons/delete4.png</file>
+        <file>icons/delete5.jpg</file>
+        <file>icons/new4.png</file>
+        <file>icons/rotate3.png</file>
+        <file>icons/scale1.jpg</file>
+        <file>icons/scale2.png</file>
+        <file>icons/scale3.png</file>
+        <file>icons/trianglesupporticon.png</file>
+        <file>icons/top.png</file>
+        <file>icons/back.png</file>
+        <file>icons/bottom.png</file>
+        <file>icons/front.png</file>
+        <file>icons/left.png</file>
+        <file>icons/right.png</file>
+        <file>icons/model.png</file>
+        <file>icons/add.png</file>
+        <file>icons/auto.png</file>
+        <file>icons/clean.png</file>
+        <file>icons/copy.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/layout.png</file>
+        <file>icons/move.png</file>
+        <file>icons/preview.png</file>
+        <file>icons/print.png</file>
+        <file>icons/rotate.png</file>
+        <file>icons/scale.png</file>
+        <file>icons/setting.png</file>
+        <file>icons/slice.png</file>
+        <file>icons/support.png</file>
+        <file>icons/drop.PNG</file>
+    </qresource>
+</RCC>
