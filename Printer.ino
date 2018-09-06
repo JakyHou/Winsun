@@ -174,7 +174,7 @@ int iLowerZLimit = -500;
 int iCurPos = 0;
 int iLastCurPos = 0;
 int iTargetPos = 0;
-int iZDriveSpeedCmd = Z_NORMALSPD;
+int iZDriveSpeedCmd = Z_MAXSPEED;
 int lastStepPulse = LOW;
 
 unsigned long ulLastInteruptTime = millis();
