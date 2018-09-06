@@ -25,6 +25,7 @@ public:
 
 //    void showEvent(QShowEvent *);
     
+    void UpdateByLanguage();
 signals:
     void setPrinter(int);
     void setMaterial(int);
@@ -45,6 +46,7 @@ public slots:
 private:
     Ui::PrintSettingDialog *ui;
     MainWindow *pMain;
+    QString language;
 
     bool bShowMore;
 };

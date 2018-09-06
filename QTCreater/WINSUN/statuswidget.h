@@ -20,6 +20,7 @@ public:
     void UpdateExtentsUI();
     void setPrintModel(bool isPrint);
     
+    void UpdateByLanguage();
 public slots:
     void setPrinter(int index);
     void setThickness(int index);
@@ -35,6 +36,7 @@ private slots:
 private:
     Ui::statusWidget *ui;
     MainWindow *pMain;
+    QString language;
 };
 
 #endif // STATUSWIDGET_H

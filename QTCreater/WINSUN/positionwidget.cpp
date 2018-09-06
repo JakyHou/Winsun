@@ -8,6 +8,13 @@ PositionWidget::PositionWidget(MainWindow *main,QWidget *parent) :
 {
     ui->setupUi(this);
     pMain = main;
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 
     connect(ui->posx,SIGNAL(returnPressed()),this,SLOT(PushTranslations()));
     connect(ui->posy,SIGNAL(returnPressed()),this,SLOT(PushTranslations()));
@@ -55,4 +62,11 @@ void PositionWidget::PushTranslations()
         {
             pMain->GetSelectedInstances()[i]->UpdateBounds();
         }
+}
+void PositionWidget::UpdateByLanguage(){
+    if(language=="Chinese"){
+        ui->label->setText("Î»ÖÃ(mm):");
+    }else{
+        ui->label->setText("Position(mm):");
+    }
 }

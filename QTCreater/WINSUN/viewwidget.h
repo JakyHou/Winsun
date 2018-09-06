@@ -20,9 +20,10 @@ public:
     explicit viewWidget(MainWindow *main,QWidget *parent = 0);
     ~viewWidget();
     
+    void UpdateByLanguage();
 private:
     Ui::viewWidget *ui;
-
+    QString language;
     MainWindow *pMain;
 };
 

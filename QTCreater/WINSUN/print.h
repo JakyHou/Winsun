@@ -109,6 +109,8 @@ public:
     clock_t t1;
     clock_t t2;
     int count;
+    QString language;
+    void UpdateByLanguage();
 };
 
 #endif // PRINT_H

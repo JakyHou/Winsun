@@ -90,6 +90,7 @@ public:
     double m_autoDistance;    
 };
 
+template <typename dan,typename dan2> inline bool mes(dan &m1,dan2 &m2){qDebug()<<m1<<" "<<m2;}
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -103,7 +104,6 @@ public:
     std::vector<B9ModelInstance*> GetSelectedInstances();
     std::vector<ModelData*> GetAllModelData(){return ModelDataList;}
     B9LayoutProjectData* ProjectData(){return project;}
-
 
 signals:
     void eventHiding();
@@ -395,6 +395,7 @@ public:
 
     void LanguageInit();
     void UpdateByLanguage();
+//    void mes(dan &m1, dan2 &m2);
 };
 
 #endif // MAINWINDOW_H

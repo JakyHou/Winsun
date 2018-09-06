@@ -21,6 +21,8 @@ public:
     explicit SliceDialog(MainWindow *main,QWidget *parent = 0);
     ~SliceDialog();
     
+    void UpdateByLanguage();
+    void QMessageBoxByLanguage(QString c1, QString c2, QString e1, QString e2);
 private slots:
     void on_BrowseButton_clicked();
 
@@ -30,6 +32,7 @@ private slots:
 private:
     Ui::SliceDialog *ui;
     MainWindow *pMain;
+    QString language;
 };
 
 #endif // SLICEDIALOG_H

@@ -10,17 +10,17 @@
     </message>
     <message utf8="true">
         <location filename="../buildspace.ui" line="26"/>
-        <source>像素精度(μm)：</source>
+        <source>像素精度(μm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../buildspace.ui" line="39"/>
-        <source>投影仪分辨率：</source>
+        <source>投影仪分辨率�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../buildspace.ui" line="52"/>
-        <source>区域(mm)：</source>
+        <source>区域(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -353,12 +353,12 @@
     </message>
     <message utf8="true">
         <location filename="../mainwindow.ui" line="420"/>
-        <source>打开投影仪</source>
+        <source>打开投影�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../mainwindow.ui" line="428"/>
-        <source>显示器设置</source>
+        <source>显示器设�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -403,7 +403,7 @@
     </message>
     <message utf8="true">
         <location filename="../mainwindow.ui" line="490"/>
-        <source>另存为</source>
+        <source>另存�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -453,7 +453,7 @@
     </message>
     <message utf8="true">
         <location filename="../mainwindow.ui" line="545"/>
-        <source>M100（128x80）</source>
+        <source>M100�28x80�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -603,7 +603,7 @@
     </message>
     <message utf8="true">
         <location filename="../materialscatalog.ui" line="41"/>
-        <source>Material：</source>
+        <source>Material�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -746,7 +746,7 @@
     </message>
     <message utf8="true">
         <location filename="../modellist.ui" line="130"/>
-        <source> Thickness(μm)：</source>
+        <source> Thickness(μm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -801,7 +801,7 @@
     </message>
     <message utf8="true">
         <location filename="../modellist.ui" line="200"/>
-        <source>切片中</source>
+        <source>切片�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -836,7 +836,7 @@
     </message>
     <message utf8="true">
         <location filename="../modellist.ui" line="425"/>
-        <source>Position(mm)：</source>
+        <source>Position(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -846,7 +846,7 @@
     </message>
     <message utf8="true">
         <location filename="../modellist.ui" line="528"/>
-        <source>Rotation：</source>
+        <source>Rotation�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -856,7 +856,7 @@
     </message>
     <message utf8="true">
         <location filename="../modellist.ui" line="631"/>
-        <source>Scaling：</source>
+        <source>Scaling�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1002,7 +1002,7 @@
         <location filename="../print.ui" line="534"/>
         <location filename="../print.ui" line="585"/>
         <location filename="../print.ui" line="620"/>
-        <source>当前状态</source>
+        <source>当前状�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1017,7 +1017,7 @@
     </message>
     <message utf8="true">
         <location filename="../print.ui" line="569"/>
-        <source>Remaining Time：</source>
+        <source>Remaining Time�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1027,7 +1027,7 @@
     </message>
     <message utf8="true">
         <location filename="../print.ui" line="604"/>
-        <source>Completion Time：</source>
+        <source>Completion Time�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1120,7 +1120,7 @@
     </message>
     <message utf8="true">
         <location filename="../printsettingdialog.ui" line="187"/>
-        <source>打印最大高度</source>
+        <source>打印最大高�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1159,7 +1159,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="54"/>
-        <source>关</source>
+        <source>�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1170,12 +1170,12 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="70"/>
-        <source>遮光板</source>
+        <source>遮光�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="73"/>
-        <source>Board：</source>
+        <source>Board�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1202,7 +1202,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="127"/>
-        <source>Position：</source>
+        <source>Position�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1227,7 +1227,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="184"/>
-        <source>感应器以下的位置为零点</source>
+        <source>感应器以下的位置为零�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1277,12 +1277,12 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="258"/>
-        <source>投影仪</source>
+        <source>投影�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="261"/>
-        <source>Projector：</source>
+        <source>Projector�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1297,7 +1297,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="342"/>
-        <source>全选</source>
+        <source>全�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1312,7 +1312,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="361"/>
-        <source>Num of Print Layers：</source>
+        <source>Num of Print Layers�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1324,7 +1324,7 @@
     <message utf8="true">
         <location filename="../printwindow.ui" line="377"/>
         <location filename="../printwindow.ui" line="463"/>
-        <source>Height(mm)：</source>
+        <source>Height(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1346,7 +1346,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="443"/>
-        <source>Thickness(μm)：</source>
+        <source>Thickness(μm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1356,7 +1356,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="453"/>
-        <source>Pixel(μm)：</source>
+        <source>Pixel(μm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1366,7 +1366,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="486"/>
-        <source>Total Layers：</source>
+        <source>Total Layers�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1402,12 +1402,12 @@
     <message utf8="true">
         <location filename="../printwindow.ui" line="571"/>
         <location filename="../printwindow.ui" line="1341"/>
-        <source>Material：</source>
+        <source>Material�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="578"/>
-        <source>固定层曝光时间</source>
+        <source>固定层曝光时�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1427,12 +1427,12 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="628"/>
-        <source>曝光强度（投影仪亮度）</source>
+        <source>曝光强度（投影仪亮度�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="631"/>
-        <source>Intensity of Exposure(0-255)：</source>
+        <source>Intensity of Exposure(0-255)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1442,7 +1442,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="654"/>
-        <source>Num of Attach Layers：</source>
+        <source>Num of Attach Layers�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1452,12 +1452,12 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="681"/>
-        <source>投影仪连接状态</source>
+        <source>投影仪连接状�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="684"/>
-        <source>Projector Status：</source>
+        <source>Projector Status�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1527,7 +1527,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="1120"/>
-        <source>默认值</source>
+        <source>默认�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1547,12 +1547,12 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="1240"/>
-        <source>打印机状态</source>
+        <source>打印机状�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="1243"/>
-        <source> Printer Status：</source>
+        <source> Printer Status�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1572,12 +1572,12 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="1290"/>
-        <source>model：</source>
+        <source>model�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="1306"/>
-        <source>打印机   切片厚度</source>
+        <source>打印�  切片厚度</source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1642,7 +1642,7 @@
     </message>
     <message utf8="true">
         <location filename="../printwindow.ui" line="1411"/>
-        <source>Time(hh:mm)：</source>
+        <source>Time(hh:mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1797,7 +1797,7 @@
     </message>
     <message utf8="true">
         <location filename="../showslices.ui" line="22"/>
-        <source>Thickness(μm)：</source>
+        <source>Thickness(μm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1967,7 +1967,7 @@
     <message utf8="true">
         <location filename="../supportparameter.ui" line="116"/>
         <location filename="../supportparameter.ui" line="457"/>
-        <source>Radius(mm)：</source>
+        <source>Radius(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -1981,7 +1981,7 @@
         <location filename="../supportparameter.ui" line="157"/>
         <location filename="../supportparameter.ui" line="231"/>
         <location filename="../supportparameter.ui" line="540"/>
-        <source>Height(mm)：</source>
+        <source>Height(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2000,7 +2000,7 @@
         <location filename="../supportparameter.ui" line="199"/>
         <location filename="../supportparameter.ui" line="413"/>
         <location filename="../supportparameter.ui" line="505"/>
-        <source>Shape：</source>
+        <source>Shape�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2038,7 +2038,7 @@
     <message utf8="true">
         <location filename="../supportparameter.ui" line="349"/>
         <location filename="../supportparameter.ui" line="664"/>
-        <source>Angle：</source>
+        <source>Angle�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2103,7 +2103,7 @@
     </message>
     <message utf8="true">
         <location filename="../supportparameter.ui" line="866"/>
-        <source>清空所有支撑</source>
+        <source>清空所有支�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2157,12 +2157,12 @@
     <message utf8="true">
         <location filename="../supportsetting.ui" line="47"/>
         <location filename="../supportsetting.ui" line="207"/>
-        <source>半径(mm)：</source>
+        <source>半径(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../supportsetting.ui" line="64"/>
-        <source>厚度(mm)：</source>
+        <source>厚度(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2174,13 +2174,13 @@
         <location filename="../supportsetting.ui" line="85"/>
         <location filename="../supportsetting.ui" line="190"/>
         <location filename="../supportsetting.ui" line="228"/>
-        <source>形状：</source>
+        <source>形状�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../supportsetting.ui" line="95"/>
         <location filename="../supportsetting.ui" line="238"/>
-        <source>长度(mm)：</source>
+        <source>长度(mm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2206,7 +2206,7 @@
     <message utf8="true">
         <location filename="../supportsetting.ui" line="156"/>
         <location filename="../supportsetting.ui" line="293"/>
-        <source>默认角度：</source>
+        <source>默认角度�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2274,7 +2274,7 @@
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="123"/>
-        <source>感应器以下的位置为零点</source>
+        <source>感应器以下的位置为零�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2284,7 +2284,7 @@
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="139"/>
-        <source>Position：</source>
+        <source>Position�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2299,17 +2299,17 @@
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="177"/>
-        <source>打印机状态</source>
+        <source>打印机状�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="180"/>
-        <source>Printer Status：</source>
+        <source>Printer Status�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../terminal.ui" line="209"/>
-        <source>Manuell Move(mm):</source>
+        <source>Manual Move(mm):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2340,12 +2340,12 @@
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="289"/>
-        <source>投影仪</source>
+        <source>投影�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="292"/>
-        <source>Light Intensity：</source>
+        <source>Light Intensity�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2385,12 +2385,12 @@
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="445"/>
-        <source>曝光强度（投影仪亮度）</source>
+        <source>曝光强度（投影仪亮度�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="448"/>
-        <source>Light Intensity(0-255)：</source>
+        <source>Light Intensity(0-255)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2410,12 +2410,12 @@
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="520"/>
-        <source>投影仪连接状态</source>
+        <source>投影仪连接状�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../terminal.ui" line="523"/>
-        <source>Projector Status：</source>
+        <source>Projector Status�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2485,7 +2485,7 @@ This will be the altitude for the next layer.
     </message>
     <message utf8="true">
         <location filename="../sizewidget.ui" line="195"/>
-        <source>Scale：</source>
+        <source>Scale�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2518,12 +2518,12 @@ This will be the altitude for the next layer.
     </message>
     <message utf8="true">
         <location filename="../statuswidget.ui" line="54"/>
-        <source>M50  （ 64x40）</source>
+        <source>M50  �64x40�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
         <location filename="../statuswidget.ui" line="59"/>
-        <source>M100（128x80）</source>
+        <source>M100�28x80�/source>
         <translation type="unfinished"></translation>
     </message>
     <message utf8="true">
@@ -2533,7 +2533,7 @@ This will be the altitude for the next layer.
     </message>
     <message utf8="true">
         <location filename="../statuswidget.ui" line="70"/>
-        <source> Thickness(μm)：</source>
+        <source> Thickness(μm)�/source>
         <translation type="unfinished"></translation>
     </message>
     <message>

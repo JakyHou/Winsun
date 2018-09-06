@@ -42,6 +42,8 @@
 #define TOPANGLE 0.2
 #define BOTTOMANGLE 0.2
 
+//template <typename dan> inline bool mes(dan &m1,dan &m2){qDebug()<<m1<<" "<<m2;}
+
 void PSupportSettings::updateValues()
 {
     SupportSetting dlg(this);
@@ -143,6 +145,15 @@ MainWindow::MainWindow(int width,int height,QWidget *parent) :
     m_width = width;
     m_height = height;
 
+    current_language="English";
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
+
     pSettings = new PSupportSettings;
     //Initialize project data
     project = new B9LayoutProjectData();
@@ -203,15 +214,6 @@ MainWindow::MainWindow(int width,int height,QWidget *parent) :
     connect(pPrint,SIGNAL(setProjectorPowerOff()),pw,SLOT(OnSetProjectorPowerOff()/*on_setProjectorBlueLED(int)*/));
 //    connect(t,SIGNAL(setProjectorBlueLED(int)),pw,SLOT(on_setProjectorBlueLED(int)));
 //    connect(t->pProjector,SIGNAL(setProjectorBlueLED(int)),pw,SLOT(on_setProjectorBlueLED(int)));
-    current_language="English";
-    QSettings appSettings;
-    appSettings.beginGroup("USERSET");
-    language=appSettings.value("Language").toString();
-    qDebug()<<"Setting language:"<<language;
-    appSettings.endGroup();
-    if(language!=""){
-        UpdateByLanguage();
-    }
     InitInterface();
 
     New();
@@ -2461,23 +2463,28 @@ bool MainWindow::SliceWorld()
     {
         if(SliceWorldToJob(filename))
         {
-//             QMessageBox::information(0,"完成","切片完成\n\n所有切片数据已保存.");
-             QMessageBox::information(0,"Finished","Slicing Completed\n\nAll layers sliced and job file saved.");
-             return true;
+            if(language=="Chinese"){
+                QMessageBox::information(0,"完成","切片完成\n\n所有切片数据已保存.");
+            }else{
+                QMessageBox::information(0,"Finished","Slicing Completed\n\nAll layers sliced and job file saved.");
+            }
+            return true;
         }
         else
         {
-//            QMessageBox::information(0,"取消","切片已取消\n\n保存失败.");
-            QMessageBox::information(0,"Canceled","Slicing Canceled\n\nnothing was saved.");
+            if(language=="Chinese"){
+                QMessageBox::information(0,"取消","切片已取消\n\n保存失败.");
+            }else{
+                QMessageBox::information(0,"Canceled","Slicing Canceled\n\nnothing was saved.");
+            }
             return false;
         }
     }
-
-
     return false;
 }
 
 //slicing to a job file!
+//template <typename dan,typename dan2> inline bool mes(dan &m1,dan2 &m2){qDebug()<<m1<<" "<<m2;}
 bool MainWindow::SliceWorldToJob(QString filename)
 {
     unsigned int m,i,l,k;
@@ -2489,6 +2496,12 @@ bool MainWindow::SliceWorldToJob(QString filename)
     double thickness = project->GetPixelThickness()*0.001;
     QString jobname = project->GetJobName();
     QString jobdesc = project->GetJobDescription();
+
+    mes("zhieght",zhieght);
+    mes("thickness",thickness);
+    mes("jobname",jobname);
+    mes("jobdesc",jobdesc);
+
     CrushedPrintJob* pMasterJob = NULL;
     Slice* pSlice;
     bool moreSlicesToCome;
@@ -2501,20 +2514,29 @@ bool MainWindow::SliceWorldToJob(QString filename)
 
     //calculate how many layers we need
     globalLayers = qCeil(zhieght/thickness);//CYP
+    mes("globalLayers",globalLayers);
 //    for(i=0;i<globalLayers;i++){
 //        mapSlice[i].clear();
 //    }
 
     //calculate how many models there are
+    int ModelDataListSize=ModelDataList.size();
+    mes("ModelDataList.size()",ModelDataListSize);
     for(m=0;m<ModelDataList.size();m++)
     {
+        int ModelDataListInstListSize=ModelDataList[m]->instList.size();
+        mes("ModelDataList[m]->instList.size()",ModelDataListInstListSize);
         for(i=0;i<ModelDataList[m]->instList.size();i++)
         {
             pInst = ModelDataList[m]->instList[i];
+            int MaxBoundZ=pInst->GetMaxBound().z();
+            int MinBoundZ=pInst->GetMinBound().z();
+            mes("pInst->GetMaxBound().z()",MaxBoundZ);
+            mes("pInst->GetMinBound().z()",MinBoundZ);
             totalSliceOps += qCeil((pInst->GetMaxBound().z() - pInst->GetMinBound().z())/thickness);
         }
     }
-
+    mes("totalSliceOps",totalSliceOps);
     //make a loading bar
     LoadingBar progressbar(0, totalSliceOps);
     QObject::connect(&progressbar,SIGNAL(rejected()),this,SLOT(CancelSlicing()));
@@ -2531,6 +2553,10 @@ bool MainWindow::SliceWorldToJob(QString filename)
     appSettings.endGroup();
     pMasterJob->setName(jobname);
     pMasterJob->setDescription(jobdesc);
+    int PixelSize=project->GetPixelSize();
+    int PixelThickness=project->GetPixelThickness();
+    mes("project->GetPixelSize()",PixelSize);
+    mes("project->GetPixelThickness()",PixelThickness);
     pMasterJob->setXYPixel(QString().number(project->GetPixelSize()/1000));
     pMasterJob->setZLayer(QString().number(project->GetPixelThickness()/1000));
     pMasterJob->clearAll(globalLayers);//fills the master job with the needed layers
@@ -2542,7 +2568,7 @@ bool MainWindow::SliceWorldToJob(QString filename)
         for(i=0;i<ModelDataList[m]->instList.size();i++)
         {
             B9ModelInstance* inst = ModelDataList[m]->instList[i];
-            inst->PrepareForSlicing(thickness);
+            inst->PrepareForSlicing(thickness);//将所有三角面按照层厚分类triContainers
 
             //slice all layers and add to instance's job file
             for(l = 0; l < globalLayers; l++)
@@ -3098,7 +3124,6 @@ void MainWindow::OnSetSupprotWidget(int iLength)
 }
 
 void MainWindow::getLanguage(int index){
-    qDebug()<<"index:"<<index;
     switch (index) {
        case 0:
            QApplication::removeTranslator(tor);
@@ -3189,7 +3214,7 @@ void MainWindow::UpdateByLanguage(){
         ui.actionTerminal->setText("终端");
         ui.actionOption->setText("打印机选项");
 
-    }else if(language=="English"){
+    }else{
         ui.menuFile->setTitle("File");
         ui.menuEdit->setTitle("Edit");
         ui.menuView->setTitle("View");
@@ -3224,3 +3249,8 @@ void MainWindow::UpdateByLanguage(){
         ui.actionOption->setText("Printer Option");
     }
 }
+
+//void MainWindow::mes(dan &m1,dan2 &m2){
+//    qDebug()<<m1<<" "<<m2;
+//}
+

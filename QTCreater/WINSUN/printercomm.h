@@ -239,6 +239,7 @@ private slots:
 public:
     bool m_bIsPrinting;
     bool m_bIsLED;
+    QString language;
 
 private:
     QextSerialPort *m_serialDevice;

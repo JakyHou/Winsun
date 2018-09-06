@@ -22,6 +22,14 @@ SupportParameter::SupportParameter(QWidget *parent, MainWindow *main) :
 
     bShowAdvanced = false;
 //    ui->pushButtonAutoSupport->hide();
+
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 }
 
 SupportParameter::~SupportParameter()
@@ -236,4 +244,71 @@ void SupportParameter::on_doubleSpinBoxDensity_editingFinished()
     appSettings.beginGroup("USERSUPPORTPARAMS");
         appSettings.setValue("AutoDistance",m_pSettings->m_autoDistance);
     appSettings.endGroup();
+}
+void SupportParameter::UpdateByLanguage(){
+    if(language=="Chinese"){
+        ui->checkBoxBase->setText("基底");
+        ui->radioButtonAdd->setText("添加");
+        ui->radioButtonDelete->setText("删除");
+        ui->pushButtonCleanAll->setText("全部删除");
+        ui->label_8->setText("密度:");
+        ui->pushButtonAutoSupport->setText("自动支撑");
+        ui->toolButtonAdvanced->setText("高级选项");
+//        QStringList headers;
+//        headers<<"基底"<<"上部"<<"中部"<<"下部";
+//        ui->tabWidget->setHorizontalHeaderLabels(headers);
+        ui->tabWidget->setTabText(0,"基底");
+        ui->tabWidget->setTabText(1,"上部");
+        ui->tabWidget->setTabText(2,"中部");
+        ui->tabWidget->setTabText(3,"下部");
+        ui->label_16->setText("形状:");
+        ui->label_14->setText("半径(mm)：");
+        ui->label_15->setText("高(mm)：");
+        ui->label->setText("形状:");
+        ui->label_2->setText("高(mm)：");
+        ui->label_3->setText("半径(mm):");
+        ui->label_4->setText("渗透度:");
+        ui->label_5->setText("角度：");
+        ui->label_6->setText("形状:");
+        ui->label_7->setText("半径(mm)：");
+        ui->label_10->setText("形状:");
+        ui->label_9->setText("高(mm)：");
+        ui->label_11->setText("半径(mm):");
+        ui->label_12->setText("渗透度:");
+        ui->label_13->setText("角度:");
+        ui->pushButtonRestoreDefaults->setText("默认");
+        ui->pushButtonSave->setText("保存");
+    }else{
+        ui->checkBoxBase->setText("Base");
+        ui->radioButtonAdd->setText("Add");
+        ui->radioButtonDelete->setText("Delete");
+        ui->pushButtonCleanAll->setText("Clean All");
+        ui->label_8->setText("Density:");
+        ui->pushButtonAutoSupport->setText("Auto Support");
+        ui->toolButtonAdvanced->setText("Advanced Options");
+//        QStringList headers;
+//        headers<<"Base"<<"Top"<<"Mid"<<"Bottom";
+//        ui->tabWidget->setHorizontalHeaderLabels(headers);
+        ui->tabWidget->setTabText(0,"Base");
+        ui->tabWidget->setTabText(1,"Top");
+        ui->tabWidget->setTabText(2,"Mid");
+        ui->tabWidget->setTabText(3,"Bottom");
+        ui->label_16->setText("Shape:");
+        ui->label_14->setText("Radius(mm)：");
+        ui->label_15->setText("Height(mm)：");
+        ui->label->setText("Shape：");
+        ui->label_2->setText("Height(mm)：");
+        ui->label_3->setText("Radius(mm):");
+        ui->label_4->setText("Penetration:");
+        ui->label_5->setText("Angle：");
+        ui->label_6->setText("Shape：");
+        ui->label_7->setText("Radius(mm)：");
+        ui->label_10->setText("Shape：");
+        ui->label_9->setText("Height(mm)：");
+        ui->label_11->setText("Radius(mm):");
+        ui->label_12->setText("Penetration:");
+        ui->label_13->setText("Angle：");
+        ui->pushButtonRestoreDefaults->setText("Default");
+        ui->pushButtonSave->setText("Save");
+    }
 }

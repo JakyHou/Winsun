@@ -53,7 +53,7 @@ class ModelData;
 class Triangle3D;
 class SliceSet;
 class B9SupportStructure;
-
+//template <typename dan,typename dan2> inline bool mes(dan &m1,dan2 &m2){qDebug()<<m1<<" "<<m2;}
 class B9ModelInstance
 {
 

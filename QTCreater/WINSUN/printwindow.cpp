@@ -94,6 +94,13 @@ PrintWindow::PrintWindow(MainWindow* main,Terminal* pTerminal,QWidget *parent) :
     m_bMirrored = false;
     m_iLastLayer = 0;
 
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
     QObject::connect(m_pTerminal, SIGNAL(updateConnectionStatus(QString)), ui->commStatus, SLOT(showMessage(QString)));
 
     connect(m_pTerminal->pPrinterComm,SIGNAL(BC_CurrentZPosInPU(int)), this, SLOT(onBC_CurrentZPosInPU()));//ui->lineEditTgtPos setText(QString::number(int))
@@ -102,21 +109,21 @@ PrintWindow::PrintWindow(MainWindow* main,Terminal* pTerminal,QWidget *parent) :
     QObject::connect(m_pTerminal, SIGNAL(setProjStatus(QString)), this, SLOT(onSetProjStatus(QString)));
 
 //Dan Begin...
-    QSettings settings;
+/*    QSettings settings;
     settings.beginGroup("cycsettings");
     settings.setValue("RSpd1",ui->spinBoxRaiseSpd1->value());
     settings.setValue("LSpd1",ui->spinBoxLowerSpd1->value());
     settings.setValue("OverLift1",ui->doubleSpinBoxOverlift1->value());
     settings.setValue("BreatheClosed1",ui->doubleSpinBoxBreathe1->value());
     settings.endGroup();
-
-    /*QSettings settings;//("cycsettings");
+*/
+    QSettings settings;//("cycsettings");
     settings.beginGroup("cycsettings");
-    ui->spinBoxRaiseSpd1->setValue(settings.value("RSpd1",120).toInt());
-    ui->spinBoxLowerSpd1->setValue(settings.value("LSpd1",120).toInt());
+    ui->spinBoxRaiseSpd1->setValue(settings.value("RSpd1",480).toInt());
+    ui->spinBoxLowerSpd1->setValue(settings.value("LSpd1",480).toInt());
     ui->doubleSpinBoxBreathe1->setValue(settings.value("SettleOpen1",1).toDouble());
     ui->doubleSpinBoxOverlift1->setValue(settings.value("OverLift1",4).toDouble());
-    settings.endGroup();*/
+    settings.endGroup();
 //Dan End...
 
 //    m_pTerminal->pSettings->loadSettings();
@@ -263,7 +270,6 @@ int PrintWindow::getProjectorBlueLED()
 
 void PrintWindow::updateTimes()
 {
-    qDebug()<<"PrintWindow::updateTimes";
     if(m_pCPJ != NULL){
         QTime vTimeRemains, t;
         int iTime = m_pTerminal->getEstCompleteTimeMS(0,m_iLastLayer,m_pCPJ->getZLayermm(),m_iTbaseMS+m_iToverMS);
@@ -338,20 +344,38 @@ void PrintWindow::on_pushButtonPrint_clicked()
 {
     if(ui->lineEditInfo->text()==NULL){
         QMessageBox msg;
-        msg.setWindowTitle("Hint");//提示
-        msg.setText("\nPlease\n\tadd a Model\n");
-        msg.setToolTip("\n请\n\t添加模型\n");
+        if(language=="Chinese"){
+            msg.setWindowTitle("提示");//提示
+            msg.setText("\n请\n\t添加模型\n");
+            //msg.setToolTip("\n请\n\t添加模型\n");
+        }else{
+            msg.setWindowTitle("Hint");//提示
+            msg.setText("\nPlease\n\tadd a Model\n");
+            //msg.setToolTip("\n请\n\t添加模型\n");
+        }
         msg.setStandardButtons(QMessageBox::Yes);
         msg.exec();
         return;
     }
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Hint");//提示
+    if(language=="Chinese"){
+         msgBox.setWindowTitle("提示");//提示
+         msgBox.setText("\n请确认:\n\t树脂是否备好\n");
+         msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+         msgBox.setButtonText(QMessageBox::Yes,QString("是"));
+         msgBox.setButtonText(QMessageBox::No,QString("否"));
+    }else{
+        msgBox.setWindowTitle("Hint");//提示
+        msgBox.setText("\nPlease Sure:\n\tThe material has fallen in\n");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    }
+
+//    msgBox.setWindowTitle("Hint");//提示
 //    msgBox.setIcon(QMessageBox::Warning);
 //    msgBox.setText("\n请确认:\n\t树脂是否备好\n");
-    msgBox.setText("\nPlease Sure:\n\tThe material has fallen in\n");
-    msgBox.setToolTip("\n请确认:\n\t树脂是否备好\n");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+//    msgBox.setText("\nPlease Sure:\n\tThe material has fallen in\n");
+//    msgBox.setToolTip("\n请确认:\n\t树脂是否备好\n");
+//    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 //    msgBox.setButtonText(QMessageBox::Yes,QString("是"));
 //    msgBox.setButtonText(QMessageBox::No,QString("否"));
     msgBox.setDefaultButton(QMessageBox::No);
@@ -363,9 +387,15 @@ void PrintWindow::on_pushButtonPrint_clicked()
 //        emit accepted();
         ui->pushButtonPrint->setEnabled(false);
         if(!m_pTerminal->on_pushButtonProjPowerON_clicked()){
-            QMessageBox::information(this, tr("Projector Disconnect"),
-                                           tr("Please confirm if the projector is connected.\n"),
-                                           QMessageBox::Ok);
+            if(language=="Chinese"){
+                QMessageBox::information(this, tr("投影仪断开"),
+                                               tr("请确认一下投影仪是否有连接.\n"),
+                                               QMessageBox::Ok);
+            }else{
+                QMessageBox::information(this, tr("Projector Disconnect"),
+                                               tr("Please confirm if the projector is connected.\n"),
+                                               QMessageBox::Ok);
+            }
         }
         QObject::connect(m_pTerminal, SIGNAL(HomeFound()), pMain, SLOT(doPrint()));
 //        int iTimeoutEstimate = 30000; // 80 seconds (should never take longer than 75 secs from upper limit)
@@ -488,11 +518,22 @@ void PrintWindow::on_comboBoxMaterial_currentIndexChanged(const QString &arg1)
 void PrintWindow::on_pushButtonCmdReset_clicked()
 {
     QMessageBox msgBox;
-    msgBox.setWindowTitle("Hint");//提示
+    if(language=="Chinese"){
+        msgBox.setWindowTitle("提示");//提示
+        msgBox.setText("\n请先确认打印机位置\n确定要复位打印机并打开投影仪吗？");//
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setButtonText(QMessageBox::Yes,QString("是"));
+        msgBox.setButtonText(QMessageBox::No,QString("否"));
+    }else{
+        msgBox.setWindowTitle("Hint");//提示
+        msgBox.setText("\nPlease confirm the printer location\nAre you sure to reset the printer and turn on the projector?");//
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    }
+//    msgBox.setWindowTitle("Hint");//提示
 //    msgBox.setIcon(QMessageBox::Warning);
-    msgBox.setText("\nPlease confirm the printer location\nAre you sure to reset the printer and turn on the projector?");//
-    msgBox.setToolTip("请先确认打印机位置\n确定要复位打印机并打开投影仪吗？");
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+//    msgBox.setText("\nPlease confirm the printer location\nAre you sure to reset the printer and turn on the projector?");//
+//    msgBox.setToolTip("请先确认打印机位置\n确定要复位打印机并打开投影仪吗？");
+//    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 //    msgBox.setButtonText(QMessageBox::Yes,QString("是"));
 //    msgBox.setButtonText(QMessageBox::No,QString("否"));
     msgBox.setDefaultButton(QMessageBox::No);
@@ -758,4 +799,41 @@ void PrintWindow::on_toolButtonAdvanced_clicked()
     }
 
 //m_pTerminal->dlgEditPrinterCycleSettings();
+}
+void PrintWindow::UpdateByLanguage(){
+    if(language=="Chinese"){
+        this->setWindowTitle("打印");
+        ui->labelPrinter->setText("打印状态：");
+        ui->groupBox->setTitle("参数");
+        ui->label_12->setText("模型");
+        ui->pushButtonBrowse->setText("浏览");
+        ui->label_5->setText("材料：");
+        ui->pushButton_MaterialsEdit->setText("编辑");
+        ui->label_7->setText("剩余时间(hh:mm)：");
+        ui->pushButtonPrint->setText("打印");
+        ui->toolButtonAdvanced->setText("         高级选项");
+        ui->groupBox_2->setTitle("设置");
+        ui->label_16->setText("上升速度(mm/min)(120~800)");
+        ui->label_14->setText("下降速度(mm/min)(120~800)");
+        ui->label_15->setText("上升高度(mm)");
+        ui->label_21->setText("缓冲时间(秒)");
+        ui->pushButtonRestoreDefaults->setText("默认");
+    }else{
+        this->setWindowTitle("Print");
+        ui->labelPrinter->setText("Printer Status：");
+        ui->groupBox->setTitle("Parameters");
+        ui->label_12->setText("model：");
+        ui->pushButtonBrowse->setText("Browse");
+        ui->label_5->setText("Material：");
+        ui->pushButton_MaterialsEdit->setText("Edit");
+        ui->label_7->setText("Time(hh:mm)：");
+        ui->pushButtonPrint->setText("Print");
+        ui->toolButtonAdvanced->setText("         Advanced Options");
+        ui->groupBox_2->setTitle("setting");
+        ui->label_16->setText("Raise Speed(mm/min)(120~800)");
+        ui->label_14->setText("Lower Speed(mm/min)(120~800)");
+        ui->label_15->setText("Raise Height(mm)");
+        ui->label_21->setText("Wait for Exposure(sec)");
+        ui->pushButtonRestoreDefaults->setText("Default");
+    }
 }

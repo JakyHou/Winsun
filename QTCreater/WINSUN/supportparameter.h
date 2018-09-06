@@ -24,6 +24,7 @@ public:
     void stuffSettings();
     bool getBaseIsChecked();
     
+    void UpdateByLanguage();
 signals:
     void setSupportWidget(int);
 
@@ -85,6 +86,7 @@ private:
     MainWindow *pMain;
     PSupportSettings *m_pSettings;
     bool bShowAdvanced;
+    QString language;
 };
 
 #endif // SUPPORTPARAMETER_H

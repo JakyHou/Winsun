@@ -8,6 +8,13 @@ OrientationWidget::OrientationWidget(MainWindow *main,QWidget *parent) :
 {
     ui->setupUi(this);
     pMain = main;
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 
     connect(ui->rotx,SIGNAL(returnPressed()),this,SLOT(PushTranslations()));
     connect(ui->roty,SIGNAL(returnPressed()),this,SLOT(PushTranslations()));
@@ -64,4 +71,13 @@ void OrientationWidget::PushTranslations()
 void OrientationWidget::on_pushButtonDrop_To_Floor_clicked()
 {
     pMain->DropSelectionToFloor();
+}
+void OrientationWidget::UpdateByLanguage(){
+    if(language=="Chinese"){
+        ui->label->setText("·½Ïò(mm):");
+        ui->pushButtonDrop_To_Floor->setText("Âäµ×");
+    }else{
+        ui->label->setText("Orientation(mm):");
+        ui->pushButtonDrop_To_Floor->setText("Drop to Floor");
+    }
 }

@@ -22,6 +22,7 @@ public:
     ~OrientationWidget();
     void UpdateInterface();
     
+    void UpdateByLanguage();
 private slots:
     void PushTranslations();
 
@@ -30,6 +31,7 @@ private slots:
 private:
     Ui::OrientationWidget *ui;
     MainWindow *pMain;
+    QString language;
 };
 
 #endif // ORIENTATIONWIDGET_H

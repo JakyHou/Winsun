@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
-    <height>283</height>
+    <width>374</width>
+    <height>287</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -1072,7 +1072,7 @@
        <string>电机下降速度</string>
       </property>
       <property name="text">
-       <string>Raise Speed(mm/min)</string>
+       <string>Raise Speed(mm/min)（120~800）</string>
       </property>
      </widget>
     </item>
@@ -1088,7 +1088,7 @@
        <string>电机上升速度</string>
       </property>
       <property name="text">
-       <string>Lower Speed(mm/min)</string>
+       <string>Lower Speed(mm/min)（120~800）</string>
       </property>
      </widget>
     </item>
@@ -1149,7 +1149,7 @@
        </size>
       </property>
       <property name="minimum">
-       <number>1</number>
+       <number>120</number>
       </property>
       <property name="maximum">
        <number>800</number>
@@ -1171,7 +1171,7 @@
        </size>
       </property>
       <property name="minimum">
-       <number>1</number>
+       <number>120</number>
       </property>
       <property name="maximum">
        <number>800</number>

@@ -76,11 +76,13 @@ public:
     bool dirtied;
     bool continueLoading;
     QString currJobFile;
+    QString language;
 
     CrushedPrintJob* pCPJ;
     bool bGrid;				// if true, grid is to be drawn
     int m_xOffset, m_yOffset;
 
+    void UpdateByLanguage();
 public slots:
     void setCurNumOfLayers(int);
     void GoToSlice(int slicenumber);

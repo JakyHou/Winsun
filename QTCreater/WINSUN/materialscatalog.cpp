@@ -130,12 +130,25 @@ void MaterialsCatalog::on_comboBoxMaterial_currentIndexChanged(const QString &ar
 void MaterialsCatalog::on_pushButtonAdd_clicked()
 {
     bool ok;
-    QString sMatName = QInputDialog::getText(this, tr("Material ID"),
-                                         tr("Enter a short unique Identifier for this Material:"), QLineEdit::Normal,
-                                         "MaterialID", &ok);
+    QString sMatName;
+    if(language=="Chinese"){
+        sMatName = QInputDialog::getText(this, tr("Material ID"),
+                                              tr("为该材料输入一个简短的惟一标识符："), QLineEdit::Normal,
+                                              "MaterialID", &ok);
+    }else{
+        sMatName = QInputDialog::getText(this, tr("Material ID"),
+                                              tr("Enter a short unique Identifier for this Material:"), QLineEdit::Normal,
+                                              "MaterialID", &ok);
+    }
+
     if (!(ok && !sMatName.isEmpty())) return;
     if(ui->comboBoxMaterial->findText(sMatName,Qt::MatchFixedString)!=-1){
-        QMessageBox::warning(this,tr("Duplicate Material ID!"),sMatName+" already exists in the Catalog.  Please enter a unique ID.",QMessageBox::Ok);
+        if(language=="Chinese"){
+            QMessageBox::warning(this,tr("材料标识符重复!"),sMatName+" 目录中已存在.  请输入一个唯一的标识符.",QMessageBox::Ok);
+        }else{
+            QMessageBox::warning(this,tr("Duplicate Material ID!"),sMatName+" already exists in the Catalog.  Please enter a unique ID.",QMessageBox::Ok);
+        }
+
         return;
     }
     if (!ok) return;
@@ -218,7 +231,7 @@ void MaterialsCatalog::on_pushButtonSave_clicked()
 
 void MaterialsCatalog::UpdateByLanguage(){
     if(language=="Chinese"){
-        ui->groupBox_2->setWindowTitle("材料设定");
+        this->setWindowTitle("材料设定");
         ui->groupBox_2->setTitle("材料设定");
         ui->label_6->setText("材料:");
         QStringList headers;
@@ -228,8 +241,8 @@ void MaterialsCatalog::UpdateByLanguage(){
         ui->pushButtonDelete->setText("删除");
         ui->pushButtonSave->setText("保存");
         ui->pushButtonCancel->setText("取消");
-    }else if(language=="English"){
-        ui->groupBox_2->setWindowTitle("Materials Setting");
+    }else{
+        this->setWindowTitle("Materials Setting");
         ui->groupBox_2->setTitle("Materials Setting");
         ui->label_6->setText("Material：");
         QStringList headers;

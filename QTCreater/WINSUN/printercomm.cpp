@@ -185,6 +185,10 @@ B9PrinterComm::B9PrinterComm()
     m_iWarmUpDelayMS = 15000;
     qDebug() << "Creator COMM Start";
     QTimer::singleShot(500, this, SLOT(RefreshCommPortItems())); // Check in .5 seconds
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
 }
 
 B9PrinterComm::~B9PrinterComm()
@@ -223,7 +227,12 @@ void B9PrinterComm::watchDog()
         // Still in Contact with the B9Creator
         startWatchDogTimer();
         emit updateConnectionStatus(MSG_CONNECTED);
-        emit BC_ConnectionStatusDetailed("Connected to port: "+m_serialDevice->portName());
+        if(language=="Chinese"){//language
+            emit BC_ConnectionStatusDetailed("已连接端口: "+m_serialDevice->portName());
+        }else{
+            emit BC_ConnectionStatusDetailed("Connected to port: "+m_serialDevice->portName());
+        }
+//        emit BC_ConnectionStatusDetailed("Connected to port: "+m_serialDevice->portName());
         return;
     }
 
@@ -240,7 +249,12 @@ void B9PrinterComm::watchDog()
     qDebug() << "WATCHDOG:  LOST CONTACT WITH B9CREATOR!";
 
     emit updateConnectionStatus(MSG_SEARCHING);
-    emit BC_ConnectionStatusDetailed("Lost Contact with Nepho3d_Studio Printer.  Searching...");//CYP B9Creator
+    if(language=="Chinese"){
+        emit BC_ConnectionStatusDetailed("与打印器失去联系.  搜寻中...");
+    }else{
+       emit BC_ConnectionStatusDetailed("Lost Contact with Nepho3d_Studio Printer.  Searching...");
+    }
+//    emit BC_ConnectionStatusDetailed("Lost Contact with Nepho3d_Studio Printer.  Searching...");//CYP B9Creator
     m_Status.reset();
     handleLostComm();
     RefreshCommPortItems();
@@ -287,8 +301,15 @@ void B9PrinterComm::RefreshCommPortItems()
         m_Status.reset();
         qDebug() << sCommPortStatus;
         emit updateConnectionStatus(sCommPortStatus);
-        sCommPortDetailedStatus = "Lost Comm on previous port. Searching...";
-        emit BC_ConnectionStatusDetailed("Lost Comm on previous port. Searching...");
+        if(language=="Chinese"){
+            sCommPortDetailedStatus = "在前一个端口失去通讯. 搜寻中...";
+            emit BC_ConnectionStatusDetailed("在前一个端口失去通讯. 搜寻中...");
+        }else{
+            sCommPortDetailedStatus = "Lost Comm on previous port. Searching...";
+            emit BC_ConnectionStatusDetailed("Lost Comm on previous port. Searching...");
+        }
+//        sCommPortDetailedStatus = "Lost Comm on previous port. Searching...";
+//        emit BC_ConnectionStatusDetailed("Lost Comm on previous port. Searching...");
         handleLostComm();
     }
 
@@ -384,7 +405,12 @@ void B9PrinterComm::RefreshCommPortItems()
             Firmware.UploadHex(sPortName);
             QApplication::restoreOverrideCursor();
             emit updateConnectionStatus(MSG_SEARCHING);
-            emit BC_ConnectionStatusDetailed("Firmware Update Complete.  Searching...");
+            if(language=="Chinese"){
+                emit BC_ConnectionStatusDetailed("固件更新完成.  搜寻中...");
+            }else{
+                emit BC_ConnectionStatusDetailed("Firmware Update Complete.  Searching...");
+            }
+//            emit BC_ConnectionStatusDetailed("Firmware Update Complete.  Searching...");
         }
         emit updateConnectionStatus(sCommPortStatus);
         emit BC_ConnectionStatusDetailed(sCommPortDetailedStatus);

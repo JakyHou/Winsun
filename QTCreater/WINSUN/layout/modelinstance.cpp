@@ -1194,7 +1194,7 @@ void B9ModelInstance::BakeGeometry(bool withsupports)
     unsigned short int v;
     Triangle3D* pNewTri;
 
-	UnBakeGeometry();
+    UnBakeGeometry();//清空本类triList
 	
     //update bounds
     maxbound = QVector3D(-999999.0,-999999.0,-999999.0);
@@ -1214,7 +1214,7 @@ void B9ModelInstance::BakeGeometry(bool withsupports)
         //scale with the inverse
         pNewTri->normal *= QVector3D(1/scale.x(),1/scale.y(),1/scale.z());
         //flip
-        if(isFlipped)
+        if(isFlipped)//翻转
             pNewTri->normal.setX(-pNewTri->normal.x());
 
         //rotate
@@ -1322,6 +1322,8 @@ unsigned int B9ModelInstance::AddSupportsToBake(bool recompBounds)
 
 void B9ModelInstance::UnBakeGeometry()
 {
+    int triListSize=triList.size();
+    mes("triList.size()",triListSize);
     if(!triList.size())
         return;
 
@@ -1346,10 +1348,10 @@ void B9ModelInstance::UpdateBounds()
 //Called from slicing routine
 void B9ModelInstance::PrepareForSlicing(double containerThickness)
 {
-    BakeGeometry(true);
-    SortBakedTriangles();
-    AllocateTriContainers(containerThickness);
-    FillTriContainers();
+    BakeGeometry(true);//几何结构,根据操作更新数据,生成triList
+    SortBakedTriangles();//按照每一个triList的minBound.z()从小到大排序三角面数据
+    AllocateTriContainers(containerThickness);//分配三角面到容器,每一层生成一个B9VerticalTriContainer,并存储在triContainers中
+    FillTriContainers();//填补三角形容器,将三角面根据Z值分类到triContainers中(只分配第一层?)
 }
 void B9ModelInstance::FreeFromSlicing()
 {
@@ -1372,14 +1374,15 @@ void B9ModelInstance::AllocateTriContainers(double containerThickness)
     double modelZExtent;
     B9VerticalTriContainer* newContainer = NULL;
     B9VerticalTriContainer* prevContainer = NULL;
-
     modelZExtent = maxbound.z() - minbound.z();
+    mes("modelZExtent:",modelZExtent);
     numContainers = modelZExtent/containerThickness;
+    mes("numContainers:",numContainers);
     if(numContainers <= 0)
         numContainers = 1;//just in case we have a REALLY thin model.
 
     containerExtents = modelZExtent/numContainers;
-
+    mes("containerExtents:",containerExtents);
     //now lets start generating containers and linking them
     for( i = 0; i < numContainers; i++ )//bottom -> up
     {

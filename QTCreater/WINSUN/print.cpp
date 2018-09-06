@@ -27,6 +27,13 @@ Print::Print(Terminal *pTerm,QWidget *parent) :
     t1=clock();
     t2=clock();
     count=0;
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 
 //    connect(m_pTerminal, SIGNAL(updateConnectionStatus(QString)), this, SLOT(on_updateConnectionStatus(QString)));
     connect(m_pTerminal, SIGNAL(updateProjectorOutput(QString)), this, SLOT(on_updateProjectorOutput(QString)));
@@ -120,9 +127,8 @@ void Print::setProjMessage(QString sText)
 
 QString Print::updateTimes()
 {   
-    qDebug()<<"Print::updateTimes";
     t1=clock();
-    qDebug()<<count<<" timeChange:"<<t1-t2;
+    //qDebug()<<count<<" timeChange:"<<t1-t2;
     count++;
     QTime vTimeFinished, vTimeRemains, t;
     int iTime = m_pTerminal->getEstCompleteTimeMS(m_iCurLayerNumber,m_iLastLayer,m_pCPJ->getZLayermm(),m_iTbase+m_iTover);
@@ -184,7 +190,11 @@ void Print::on_signalAbortPrint()
 
 //    QMessageBox::information(0,"´òÓ¡Í£Ö¹!","´òÓ¡ÒÑÍ£Ö¹\n\n"+m_sAbortMessage);
 
-    QMessageBox::information(0,"Printing Aborted!","PRINT ABORTED\n\n"+m_sAbortMessage);
+    if(language=="Chinese"){
+        QMessageBox::information(0,"´òÓ¡ÖÕÖ¹!","´òÓ¡ÖÕÖ¹\n\n"+m_sAbortMessage);
+    }else{
+        QMessageBox::information(0,"Printing Aborted!","PRINT ABORTED\n\n"+m_sAbortMessage);
+    }
 }
 
 
@@ -231,13 +241,22 @@ void Print::exposeTBaseLayer(){
 
     //Start Tbase Print exposure
     ui->progressBarPrintProgress->setValue(m_iCurLayerNumber+1);
+    if(language=="Chinese"){
+        ui->lineEditLayerCount->setText("ÕýÔÚ´òÓ¡ÇÐÆ¬ "+QString::number(m_iCurLayerNumber+1)+" of "+QString::number(m_iLastLayer)+",  "+QString::number(100.0*(double)(m_iCurLayerNumber+1)/(double)m_iLastLayer,'f',1)+"% Íê³É");
+    }else{
+        ui->lineEditLayerCount->setText("Creating Layer "+QString::number(m_iCurLayerNumber+1)+" of "+QString::number(m_iLastLayer)+",  "+QString::number(100.0*(double)(m_iCurLayerNumber+1)/(double)m_iLastLayer,'f',1)+"% Complete");
+    }
 //    ui->lineEditLayerCount->setText("ÕýÔÚ´òÓ¡ÇÐÆ¬ "+QString::number(m_iCurLayerNumber+1)+" / "+QString::number(m_iLastLayer)+",  "+QString::number(100.0*(double)(m_iCurLayerNumber+1)/(double)m_iLastLayer,'f',1)+"% Íê³É");
-    ui->lineEditLayerCount->setText("Creating Layer "+QString::number(m_iCurLayerNumber+1)+" of "+QString::number(m_iLastLayer)+",  "+QString::number(100.0*(double)(m_iCurLayerNumber+1)/(double)m_iLastLayer,'f',1)+"% Complete");
+//    ui->lineEditLayerCount->setText("Creating Layer "+QString::number(m_iCurLayerNumber+1)+" of "+QString::number(m_iLastLayer)+",  "+QString::number(100.0*(double)(m_iCurLayerNumber+1)/(double)m_iLastLayer,'f',1)+"% Complete");
     setSlice(m_iCurLayerNumber);
     m_vClock.start(); // image is out there, start the clock running!
     QString sTimeUpdate = updateTimes();
     if(m_iPaused==PAUSE_WAIT){
-        ui->lineEditLayerCount->setText("Pausing...");
+        if(language=="Chinese"){
+            ui->lineEditLayerCount->setText("ÔÝÍ£...");
+        }else{
+            ui->lineEditLayerCount->setText("Pausing...");
+        }
         setProjMessage("Pausing...");//ÔÝÍ£
     }
     else{
@@ -247,6 +266,7 @@ void Print::exposeTBaseLayer(){
     m_iPrintState = PRINT_EXPOSING;
     // set timer
     int iAdjExposure = m_pTerminal->getLampAdjustedExposureTime(m_iTbase);
+    qDebug()<<"DiffExposureTime:"<<m_iCurLayerNumber<<" "<<m_iNumAttach<<"  "<<m_iTattach;
     if(m_iCurLayerNumber<m_iNumAttach) iAdjExposure = m_pTerminal->getLampAdjustedExposureTime(m_iTattach);  //First layers may have different exposure timing
     if(iAdjExposure>0){
         QTimer::singleShot(iAdjExposure-m_vClock.elapsed(), this, SLOT(startExposeTOverLayers()));
@@ -309,13 +329,22 @@ void Print::exposureOfTOverLayersFinished(){
         m_iPaused=PAUSE_YES;
         m_pTerminal->rcSTOP();
 //        m_pTerminal->rcCloseVat();
-        ui->pushButtonPauseResume->setText("Resume");//¼ÌÐø
-        ui->pushButtonPauseResume->setToolTip("»Ö¸´");
+        if(language=="Chinese"){
+            ui->pushButtonPauseResume->setText("»Ö¸´");//¼ÌÐø
+            ui->pushButtonPauseResume->setToolTip("»Ö¸´");
+            ui->lineEditLayerCount->setText("ÒÑÔÝÍ£.  ÊÖ¶¯¶¨Î»ÇÐ»»¿ª¹ØÒÑÆôÓÃ.");
+        }else{
+            ui->pushButtonPauseResume->setText("Resume");//¼ÌÐø
+            ui->pushButtonPauseResume->setToolTip("»Ö¸´");
+            ui->lineEditLayerCount->setText("Paused.  Manual positioning toggle switches are enabled.");
+         }
+//        ui->pushButtonPauseResume->setText("Resume");//¼ÌÐø
+//        ui->pushButtonPauseResume->setToolTip("»Ö¸´");
         ui->pushButtonPauseResume->setEnabled(true);
         ui->pushButtonAbort->setEnabled(true);
-//        ui->lineEditLayerCount->setText("ÔÝÍ£.");
-//        m_pTerminal->rcSetProjMessage(" ÔÝÍ£.  °´ 'p' ¼ÌÐø´òÓ¡, 'a' ÖÕÖ¹´òÓ¡.");
-        ui->lineEditLayerCount->setText("Paused.  Manual positioning toggle switches are enabled.");
+////        ui->lineEditLayerCount->setText("ÔÝÍ£.");
+////        m_pTerminal->rcSetProjMessage(" ÔÝÍ£.  °´ 'p' ¼ÌÐø´òÓ¡, 'a' ÖÕÖ¹´òÓ¡.");
+//        ui->lineEditLayerCount->setText("Paused.  Manual positioning toggle switches are enabled.");
         m_pTerminal->rcSetProjMessage(" Paused.  Manual toggle switches are enabled.  Press 'p' when to resume printing, 'A' to abort.");
         return;
     }
@@ -323,7 +352,12 @@ void Print::exposureOfTOverLayersFinished(){
     if(m_bAbort){
         // We're done
         m_pTerminal->rcSetCPJ(NULL); //blank
-        ui->pushButtonAbort->setText("Abort");//ÖÕÖ¹
+        if(language=="Chinese"){
+            ui->pushButtonAbort->setText("ÖÕÖ¹");//ÖÕÖ¹
+        }else{
+            ui->pushButtonAbort->setText("Abort");//ÖÕÖ¹
+        }
+//        ui->pushButtonAbort->setText("Abort");//ÖÕÖ¹
         m_iPrintState = PRINT_ABORT;
         on_signalAbortPrint();
         return;
@@ -335,7 +369,12 @@ void Print::exposureOfTOverLayersFinished(){
         ui->pushButtonPauseResume->setEnabled(false);
         m_iPrintState=PRINT_DONE;
         m_pTerminal->rcFinishPrint(30); //Finish at current z position + 50.8 mm, turn Projector Off
-        ui->lineEditLayerCount->setText("Finished!");//Íê³É
+        if(language=="Chinese"){
+            ui->lineEditLayerCount->setText("Íê³É!");//Íê³É
+        }else{
+            ui->lineEditLayerCount->setText("Finished!");//Íê³É
+        }
+//        ui->lineEditLayerCount->setText("Finished!");//Íê³É
         setProjMessage("Finished!");
         return;
     }
@@ -348,7 +387,12 @@ void Print::exposureOfTOverLayersFinished(){
 //        ui->lineEditLayerCount->setText("°þÀëÇÐÆ¬ "+QString::number(m_iCurLayerNumber)+", ÖØÐÂ¶¨Î»ÇÐÆ¬ "+QString::number(m_iCurLayerNumber+1));
 //        QString sTimeUpdate = updateTimes();
 //        setProjMessage("(°´'p' ÔÝÍ£, 'a' ÖÕÖ¹)  " + sTimeUpdate+"  ÊÍ·Å²¢Ñ­»·µ½ "+QString::number(m_iCurLayerNumber+1)+"/"+QString::number(m_iLastLayer));
-        ui->lineEditLayerCount->setText("Releasing Layer "+QString::number(m_iCurLayerNumber)+", repositioning to layer "+QString::number(m_iCurLayerNumber+1));
+        if(language=="Chinese"){
+            ui->lineEditLayerCount->setText("ÊÍ·Å²ã "+QString::number(m_iCurLayerNumber)+", ÖØÐÂ¶¨Î»²ã "+QString::number(m_iCurLayerNumber+1));
+        }else{
+            ui->lineEditLayerCount->setText("Releasing Layer "+QString::number(m_iCurLayerNumber)+", repositioning to layer "+QString::number(m_iCurLayerNumber+1));
+        }
+        //ui->lineEditLayerCount->setText("Releasing Layer "+QString::number(m_iCurLayerNumber)+", repositioning to layer "+QString::number(m_iCurLayerNumber+1));
         QString sTimeUpdate = updateTimes();
         setProjMessage("(Press'p' to pause, 'a' to ABORT)  " + sTimeUpdate+"  Release and cycle to Layer "+QString::number(m_iCurLayerNumber+1)+" of "+QString::number(m_iLastLayer));
      }
@@ -384,8 +428,12 @@ void Print::on_pushButtonPauseResume_clicked()
     if(m_iPaused==PAUSE_YES){
         // Time to Resume...
         m_iPaused = PAUSE_NO;
-        ui->pushButtonPauseResume->setText("Pause");
-        ui->pushButtonPauseResume->setToolTip("ÔÝÍ£");
+        if(language=="Chinese"){
+            ui->pushButtonPauseResume->setText("ÔÝÍ£");
+        }else{
+            ui->pushButtonPauseResume->setText("Pause");
+        }
+//        ui->pushButtonPauseResume->setToolTip("ÔÝÍ£");
 //        ui->pushButtonPauseResume->setEnabled(true);//cyp0928 ¶à´ÎÔÝÍ£
         ui->pushButtonAbort->setEnabled(true);
         exposureOfTOverLayersFinished();
@@ -393,8 +441,13 @@ void Print::on_pushButtonPauseResume_clicked()
     else if(m_iPaused==PAUSE_NO){
         // Time to Pause....
         m_iPaused = PAUSE_WAIT;
-        ui->pushButtonPauseResume->setText("Pause...");
-        ui->pushButtonPauseResume->setToolTip("ÔÝÍ£...");
+        if(language=="Chinese"){
+            ui->pushButtonPauseResume->setText("ÔÝÍ£");
+        }else{
+            ui->pushButtonPauseResume->setText("Pause");
+        }
+//        ui->pushButtonPauseResume->setText("Pause...");
+//        ui->pushButtonPauseResume->setToolTip("ÔÝÍ£...");
         ui->pushButtonPauseResume->setEnabled(false);
         ui->pushButtonAbort->setEnabled(false);
         setProjMessage("Pause...");
@@ -421,24 +474,57 @@ void Print::on_pushButtonAbort_clicked(QString sAbortText)
 //        if(ret == QMessageBox::No)
 //            return;
 //    }
-
-    m_sAbortMessage = sAbortText;
+    if(sAbortText=="User Directed Abort."){
+        if(language=="Chinese"){
+            m_sAbortMessage = "ÓÃ»§ÖÕÖ¹";
+        }else{
+            m_sAbortMessage = sAbortText;
+        }
+    }
     if(m_sAbortMessage.contains("Jammed Mechanism")||m_sAbortMessage.contains("Lost Printer Connection")||
        (m_sAbortMessage.contains("Projector"))){
         // Special cases, always handle it asap.
         m_pTerminal->rcSetCPJ(NULL); //blank
-        ui->pushButtonAbort->setText("Abort");
+        if(language=="Chinese"){
+            ui->pushButtonAbort->setText("ÖÕÖ¹");
+        }else{
+            ui->pushButtonAbort->setText("Abort");
+        }
+//        ui->pushButtonAbort->setText("Abort");
         m_iPrintState = PRINT_ABORT;
         on_signalAbortPrint();
         return;
     }
 
     if(m_iPrintState == PRINT_NO||m_iPrintState == PRINT_ABORT||m_iPaused==PAUSE_WAIT) return; // no abort if pausing, not printing or already aborting
-    ui->pushButtonAbort->setText("Aborting...");//ÖÕÖ¹
-    ui->lineEditLayerCount->setText("Aborting...");
+    if(language=="Chinese"){
+        ui->pushButtonAbort->setText("ÖÕÖ¹...");//ÖÕÖ¹
+        ui->lineEditLayerCount->setText("ÖÕÖ¹...");
+    }else{
+        ui->pushButtonAbort->setText("Aborting...");//ÖÕÖ¹
+        ui->lineEditLayerCount->setText("Aborting...");
+    }
+//    ui->pushButtonAbort->setText("Aborting...");//ÖÕÖ¹
+//    ui->lineEditLayerCount->setText("Aborting...");
     ui->pushButtonPauseResume->setEnabled(false);
     ui->pushButtonAbort->setEnabled(false);
     setProjMessage("Aborting...");
     m_bAbort = true;
     if(m_iPaused==PAUSE_YES) on_pushButtonPauseResume_clicked();
+}
+void Print::UpdateByLanguage(){
+    if(language=="Chinese"){
+        this->setWindowTitle("´òÓ¡ÖÐ");
+        ui->label->setText("Ê£ÓàÊ±¼ä:");
+        ui->label_2->setText("Íê³ÉÊ±¼ä£º");
+        ui->pushButtonPauseResume->setText("ÔÝÍ£");
+        ui->pushButtonAbort->setText("ÖÕÖ¹");
+
+    }else{
+        this->setWindowTitle("Printing");
+        ui->label->setText("Remaining Time£º");
+        ui->label_2->setText("Completion Time£º");
+        ui->pushButtonPauseResume->setText("Pause");
+        ui->pushButtonAbort->setText("Abort");
+    }
 }

@@ -22,6 +22,7 @@ public:
 
     void UpdateInterface();
 
+    void UpdateByLanguage();
 private slots:
     void PushTranslations();
 
@@ -34,6 +35,7 @@ private slots:
 private:
     Ui::sizeWidget *ui;
     MainWindow *pMain;
+    QString language;
 };
 
 #endif // SIZEWIDGET_H

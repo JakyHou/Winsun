@@ -94,7 +94,8 @@ public slots:
     void rcResetHomePos(){ on_pushButtonCmdReset_clicked();}
     void rcSendCmd(QString sCmd){ pPrinterComm->SendCmd(sCmd); }
     void rcResetCurrentPositionPU(int iCurPos){
-        pPrinterComm->SendCmd("O"+QString::number(iCurPos)); }
+        //pPrinterComm->SendCmd("O"+QString::number(iCurPos));
+    }
     void rcBasePrint(double dBaseMM); // Position for Base Layer Exposure.
     void rcNextPrint(double dNextMM,QString progressValue,int minu); // Position for Next Layer Exposure.
     void rcFinishPrint(double dDeltaMM); // Calculates a final Z position at current + dDelta, closes vat, raises z, turns off projector.
@@ -279,6 +280,10 @@ private slots:
 
     void on_pushButtonCalibration_clicked();
 
+    void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
+
 public:
     B9PrinterComm *pPrinterComm;
     PCycleSettings *pSettings;
@@ -311,6 +316,8 @@ public:
     QString m_progressValue;
     int m_minute;
 
+    void UpdateByLanguage();
+    void QMessageBoxByLanguage();
 private:
     Ui::Terminal *ui;
     MainWindow *pMain;
@@ -351,7 +358,7 @@ private:
     int m_iTgtZPosInPU;
     double m_dCurZPosInMM;
     double m_dTgtZPosInMM;
-
+    QString language;
 };
 
 #endif // TERMINAL_H

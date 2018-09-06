@@ -8,6 +8,13 @@ statusWidget::statusWidget(MainWindow *main,QWidget *parent) :
     ui->setupUi(this);
     pMain = main;
     UpdateExtentsUI();
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 }
 
 statusWidget::~statusWidget()
@@ -106,4 +113,18 @@ void statusWidget::UpdateExtentsUI()
 
     int indx = ui->thicknesscombo->findText(QString::number(pMain->project->GetPixelThickness()));
     ui->thicknesscombo->setCurrentIndex(indx);
+}
+void statusWidget::UpdateByLanguage(){
+    if(language=="Chinese"){
+        ui->label_2->setText(" 打印机:");
+        ui->label_8->setText(" 层厚(μm)：");
+        ui->label_3->setText("材料:");
+        ui->pushButtonPrint->setText("打印");
+    }else{
+        ui->label_2->setText(" Printer:");
+        ui->label_8->setText(" Thickness(μm)：");
+        ui->label_3->setText("Material:");
+        ui->pushButtonPrint->setText("Print");
+
+    }
 }

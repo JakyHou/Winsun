@@ -43,7 +43,7 @@
 #include <mainwindow.h>
 #include <windows.h>
 #define VERSIONINFO "Version 1.0.0     Copyright 2018 , Nepho3d_Studio     www.nepho3d.com\n "
-
+//template <typename dan,typename dan2> inline bool mes(dan &m1,dan2 &m2){qDebug()<<m1<<" "<<m2;}
 int main(int argc, char *argv[])
 {
     //Save user settings parameters(eg.supportparameter materialscatalog...)

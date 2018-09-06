@@ -17,7 +17,11 @@ PrintSettingDialog::PrintSettingDialog(MainWindow *main,QWidget *parent) :
     }
     else
         ui->checkBoxAppears->setChecked(true);
+    language=appSettings.value("Language").toString();
     appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 //    ui->groupBox_BuildSpace->setVisible(false);
     UpdateExtentsUI();
 //    connect(this,SIGNAL(show()),this,SLOT(UpdateExtentsUI()));
@@ -133,4 +137,23 @@ void PrintSettingDialog::on_printercombo_currentIndexChanged(int index)
         ui->Print_Extents_Y->setText("80");
     }
 
+}
+void PrintSettingDialog::UpdateByLanguage(){
+    if(language=="Chinese"){
+        this->setWindowTitle("选择打印机");
+        ui->label->setText("打印机:");
+        ui->groupBox_BuildSpace->setTitle("构建空间:");
+        ui->label_4->setText("像素精度:");
+        ui->label_35->setText("构图区间(mm):");
+        ui->label_36->setText("最大高度(mm)");
+        ui->checkBoxAppears->setText("不再显示");
+    }else{
+        this->setWindowTitle("Select Printer");
+        ui->label->setText("Printer:");
+        ui->groupBox_BuildSpace->setTitle("Build Space:");
+        ui->label_4->setText("Pixel Size(μm):");
+        ui->label_35->setText("Build Table Area(mm):");
+        ui->label_36->setText("Max Height(mm):");
+        ui->checkBoxAppears->setText("Did'n show it again.");
+    }
 }

@@ -29,6 +29,14 @@ ShowSlices::ShowSlices(MainWindow* main, QWidget *parent = 0) :
 //    pWorldView = new WorldView(NULL,pMain);
 //    ui->scrollArea->setWidget(pWorldView);//pMain->
 //    this->setWindowFlags(this->windowFlags() | Qt::FramelessWindowHint);
+
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 }
 
 ShowSlices::~ShowSlices()
@@ -149,3 +157,11 @@ void ShowSlices::mouseReleaseEvent(QMouseEvent * pEvent)
 {
     QWidget::mouseReleaseEvent(pEvent);
 }
+void ShowSlices::UpdateByLanguage(){
+    if(language=="Chinese"){
+        ui->label->setText("²ãºñ(¦Ìm)£º");
+    }else{
+        ui->label->setText("Thickness(¦Ìm)£º");
+    }
+}
+

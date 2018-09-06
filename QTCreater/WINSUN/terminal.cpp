@@ -27,6 +27,7 @@
 #define OVERLIFT1 4.0
 
 #define MAX_NUM_RETRIES 5
+#define TGT 300
 
 #include "Helper.h"
 
@@ -384,6 +385,13 @@ Terminal::Terminal(MainWindow *main,QWidget *parent) :
 
     setFixedSize(this->width(), this->height());//固定窗口大小
 
+    QSettings appSettings;
+    appSettings.beginGroup("USERSET");
+    language=appSettings.value("Language").toString();
+    appSettings.endGroup();
+    if(language!=""){
+        UpdateByLanguage();
+    }
 }
 
 Terminal::~Terminal()
@@ -975,23 +983,24 @@ int Terminal::getEstCompleteTimeMS(int iCurLayer, int iTotLayers, double dLayerT
     //return estimated completion time
   //  qDebug()<<"TimeTestBegin****";
       int  iLowerCount = iTotLayers-iCurLayer;
-    //qDebug()<<"iLowerCount剩余层数:"<<iLowerCount;
-    qDebug()<<"iExposeMS:"<<iExposeMS;
+//    qDebug()<<"iLowerCount:"<<iLowerCount;
+//    qDebug()<<"iExposeMS:"<<iExposeMS;
     int iTotalTimeMS = iExposeMS*iLowerCount;// + iExposeMS*iUpperCount;//等待时间*剩余层数
   // qDebug()<<"Time1:"<<iTotalTimeMS;
     iTotalTimeMS = getLampAdjustedExposureTime(iTotalTimeMS);
  //   qDebug()<<"Time1.2:"<<iTotalTimeMS;
     // Add Breathe and Settle
-    qDebug()<<"pSettings->m_dBreatheClosed1:"<<pSettings->m_dBreatheClosed1<<"   pSettings->m_dSettleOpen1:"<<pSettings->m_dSettleOpen1;
+ //   qDebug()<<"pSettings->m_dBreatheClosed1:"<<pSettings->m_dBreatheClosed1<<"   pSettings->m_dSettleOpen1:"<<pSettings->m_dSettleOpen1;
     iTotalTimeMS += iLowerCount*(pSettings->m_dBreatheClosed1 + pSettings->m_dSettleOpen1)*1000;
  //   qDebug()<<"Time2:"<<iTotalTimeMS;
    // qDebug()<<"m_dBreatheClosed1:"<<pSettings->m_dBreatheClosed1<<"   m_dSettleOpen1:"<<pSettings->m_dSettleOpen1;
 
     // Z Travel Time
     int iGap1 = iLowerCount*(int)(pSettings->m_dOverLift1*100000.0/(double)pPrinterComm->getPU());
-   // qDebug()<<"m_dOverLift1:"<<pSettings->m_dOverLift1;
-   // qDebug()<<"PU:"<<pPrinterComm->getPU();
+//   qDebug()<<"m_dOverLift1:"<<pSettings->m_dOverLift1;
+//   qDebug()<<"PU:"<<pPrinterComm->getPU();
   //  qDebug()<<"iGap1:"<<iGap1;
+//   qDebug()<<"dLayerThicknessMM:"<<dLayerThicknessMM;
     int iZRaiseDistance1 = iGap1 + iLowerCount*(int)(dLayerThicknessMM*100000.0/(double)pPrinterComm->getPU());
     int iZLowerDistance1 = iGap1;
     //qDebug()<<"iZRaiseDistance1:"<<iZRaiseDistance1;
@@ -1017,7 +1026,6 @@ int Terminal::getLampAdjustedExposureTime(int iBaseTimeMS)
     //  So at Halflife, we've doubled the standard exposure time.
     double dLife = (double)pPrinterComm->getLampHrs()/(double)pPrinterComm->getHalfLife();
     if(dLife > 1.0)dLife = 1.0; // Limit to 100% the amount of applied bulb degradation (reached at HalfLife)
- //   qDebug()<<"dLife:"<<dLife;
     return iBaseTimeMS + (double)iBaseTimeMS*dLife;
 }
 
@@ -1418,7 +1426,6 @@ void Terminal::SetCycleParameters(){//cyp
     iD = (int)(pSettings->m_dBreatheClosed1*1000.0);
     iW=100;
     iX=100;
-    qDebug()<<"iE:"<<iE;
     if(iD!=m_iD){pPrinterComm->SendCmd("D"+QString::number(iD)); m_iD = iD;}
     if(iE!=m_iE){pPrinterComm->SendCmd("E"+QString::number(iE)); m_iE = iE;}
     if(iJ!=m_iJ){pPrinterComm->SendCmd("J"+QString::number(iJ)); m_iJ = iJ;}
@@ -1679,7 +1686,12 @@ void Terminal::getKey(int iKey)
     case 97://cyp 65:        // Capital 'A' to abort
         if(!isEnabled()){
 //            m_pPReleaseCycleTimer->stop();//cyp
-            emit signalAbortPrint("User Directed Abort.");
+            if(language=="Chinese"){
+                emit signalAbortPrint("用户终止.");
+            }else{
+                emit signalAbortPrint("User Directed Abort.");
+            }
+//            emit signalAbortPrint("User Directed Abort.");
         }
         break;
     default:
@@ -1726,10 +1738,11 @@ void Terminal::on_lineEditTgtZPU_editingFinished()
 {
     int iValue=m_iTgtZPosInPU;//ui->lineEditTgtZPU->text().toInt();
     if(iValue<0 || iValue >13000){
-        QMessageBox::information(this, tr("Target Level (Z high) Out of Range"),
-                                       tr("Please enter an integer value between 0-130.\n"
-                                          "This will be the altitude for the next layer.\n"),
-                                       QMessageBox::Ok);
+        QMessageBoxByLanguage();
+//        QMessageBox::information(this, tr("Target Level (Z high) Out of Range"),
+//                                       tr("Please enter an integer value between 0-130.\n"
+//                                          "This will be the altitude for the next layer.\n"),
+//                                       QMessageBox::Ok);
         iValue = 0;
         m_iTgtZPosInPU = iValue;
 //        ui->lineEditTgtZPU->setText(QString::number(iValue));
@@ -2010,10 +2023,11 @@ void Terminal::on_toolButtonUp_clicked()
     double dPU = (double)pPrinterComm->getPU()/100000.0;
     m_iTgtZPosInPU = m_iCurZPosInPU +(int)(ui->doubleSpinBoxDistance->value()/dPU);
     if(m_iTgtZPosInPU<0 || m_iTgtZPosInPU >13000){
-        QMessageBox::information(this, tr("Target Level (Z steps) Out of Range"),
-                                       tr("Please enter an integer value between 0-130.00.\n"
-                                          "This will be the altitude for the next layer.\n"),
-                                       QMessageBox::Ok);
+        QMessageBoxByLanguage();
+//        QMessageBox::information(this, tr("Target Level (Z steps) Out of Range"),
+//                                       tr("Please enter an integer value between 0-130.00.\n"
+//                                          "This will be the altitude for the next layer.\n"),
+//                                       QMessageBox::Ok);
         return;
     }
     pPrinterComm->SendCmd("G"+QString::number(m_iTgtZPosInPU));
@@ -2024,10 +2038,11 @@ void Terminal::on_toolButtonDown_clicked()
     double dPU = (double)pPrinterComm->getPU()/100000.0;
     m_iTgtZPosInPU = m_iCurZPosInPU -(int)(ui->doubleSpinBoxDistance->value()/dPU);
     if(m_iTgtZPosInPU<0 || m_iTgtZPosInPU >13000){
-        QMessageBox::information(this, tr("Target Level (Z steps) Out of Range"),
-                                       tr("Please enter an integer value between 0-130.00.\n"
-                                          "This will be the altitude for the next layer.\n"),
-                                       QMessageBox::Ok);
+        QMessageBoxByLanguage();
+//        QMessageBox::information(this, tr("Target Level (Z steps) Out of Range"),
+//                                       tr("Please enter an integer value between 0-130.00.\n"
+//                                          "This will be the altitude for the next layer.\n"),
+//                                       QMessageBox::Ok);
         return;
     }
     pPrinterComm->SendCmd("G"+QString::number(m_iTgtZPosInPU));
@@ -2075,4 +2090,68 @@ void Terminal::on_pushButtonSubtract_clicked()
     }
 }
 
+void Terminal::UpdateByLanguage(){
+    if(language=="Chinese"){
+        this->setWindowTitle("终端");
+        ui->labelPrinter->setText("打印机状态：");
+        ui->label_2->setText("手动调整(mm):");
+        ui->label_4->setText("光强：");
+        ui->pushButtonCalibration->setText("位置校准");
+        ui->pushButton->setText("重设起点");
+        ui->pushButton_2->setText("找到起点");
+    }else{
+        this->setWindowTitle("Terminal");
+        ui->labelPrinter->setText("Printer Status：");
+        ui->label_2->setText("Manual Move(mm):");
+        ui->label_4->setText("Light Intensity：");
+        ui->pushButtonCalibration->setText("Go To Calibration Position");
+        ui->pushButton->setText("ResetHome");
+        ui->pushButton_2->setText("FindHome");
+    }
+}
 
+void Terminal::on_pushButton_clicked()
+{
+    if(m_iTgtZPosInPU<0 || m_iTgtZPosInPU >13000){
+        ui->lineEdit->setText("Data is out of range.\n"
+                              "(数据超出0-1300范围).\n");
+        return;
+    }
+//    else{
+//        ui->lineEdit->setText(QString::number(m_iTgtZPosInPU));
+//    }
+    QSettings appSettings;//
+    appSettings.beginGroup("USERSET");
+    appSettings.setValue("Home",m_iTgtZPosInPU);
+    appSettings.endGroup();
+    if(language=="Chinese")
+        QMessageBox::information(this, tr("起点设置"),tr("起点设置成功.\n"),QMessageBox::Ok);
+    else
+        QMessageBox::information(this, tr("ResetHome"),tr("ResetHome Success.\n"),QMessageBox::Ok);
+}
+void Terminal::on_pushButton_2_clicked()
+{
+    QSettings appSettings;//
+    appSettings.beginGroup("USERSET");
+    m_iTgtZPosInPU=appSettings.value("Home",TGT).toInt();
+    appSettings.endGroup();
+    if(m_iTgtZPosInPU<0 || m_iTgtZPosInPU >13000){
+        QMessageBoxByLanguage();
+        return;
+    }
+    pPrinterComm->SendCmd("G"+QString::number(m_iTgtZPosInPU));
+}
+
+void Terminal::QMessageBoxByLanguage(){
+    if(language=="Chinese"){
+        QMessageBox::information(this, tr("目标值超过范围"),
+                                       tr("请输入一个0-130.00的值.\n"
+                                          /*"This will be the altitude for the next layer.\n"*/),
+                                       QMessageBox::Ok);
+    }else{
+        QMessageBox::information(this, tr("Target Level (Z steps) Out of Range"),
+                                       tr("Please enter an integer value between 0-130.00.\n"
+                                          "This will be the altitude for the next layer.\n"),
+                                       QMessageBox::Ok);
+    }
+}

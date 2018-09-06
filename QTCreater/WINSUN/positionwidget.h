@@ -21,12 +21,14 @@ public:
     ~PositionWidget();
     void UpdateInterface();
 
+    void UpdateByLanguage();
 private slots:
     void PushTranslations();
     
 private:
     Ui::PositionWidget *ui;
     MainWindow *pMain;
+    QString language;
 };
 
 #endif // POSITIONWIDGET_H

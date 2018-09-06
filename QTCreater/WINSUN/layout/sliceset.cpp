@@ -121,6 +121,8 @@ Slice* SliceSet::ParallelCreateSlices(bool &slicesInTransit, CrushedPrintJob* to
     SetupRasturizer();
 
     //Deploy workers to smart jobs!
+    int workerThreadsSize=workerThreads.size();
+    mes("workerThreads.size():",workerThreadsSize);
     for(i = 0; i < workerThreads.size(); i++)
     {
         if(workerThreads[i].isRunning()){

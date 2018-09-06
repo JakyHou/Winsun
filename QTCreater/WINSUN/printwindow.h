@@ -143,6 +143,7 @@ public:
     MainWindow* pMain;
 
     bool BlueEnable;
+    QString language;
 //    bool isM50;
 
 //    QSettings m_settings;
@@ -163,6 +164,7 @@ public:
 //    unsigned int m_numImgInFlash;
 
 
+    void UpdateByLanguage();
 private:
     Ui::PrintWindow *ui;
     CrushedPrintJob *m_pCPJ;
