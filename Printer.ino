@@ -128,7 +128,7 @@ Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 #define Z_MAXSPEED 200
 #define Z_MINSPEED 30
 #define Z_NORMALSPD 120
-#define Z_RESETSPD 120
+#define Z_RESETSPD 200
 
 // Print Cycle states
 #define CYCLE_OFF 0
