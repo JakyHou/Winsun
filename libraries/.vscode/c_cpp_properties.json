@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "D:\\Program Files (x86)\\Arduino\\tools\\**",
+                "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\**",
+                "C:\\Users\\dell\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\sam\\1.6.11\\**",
+                "C:\\Users\\dell\\AppData\\Local\\Arduino15\\packages\\arduino\\tools\\**",
+                "C:\\Users\\dell\\AppData\\Local\\Arduino15\\packages\\arduino\\hardware\\avr\\1.6.21\\**",
+                "${workspaceFolder}/Adafruit_SSD1306-master",
+                "C:/Users/dell/AppData/Local/Arduino15/packages/arduino/hardware/avr/1.6.21/libraries/Wire/src"
+            ],
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}

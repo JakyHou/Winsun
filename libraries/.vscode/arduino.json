@@ -1,0 +1,5 @@
+{
+    "port": "COM18",
+    "board": "arduino:avr:uno",
+    "sketch": "C:\\\\Users\\\\HHQCG\\\\Desktop\\\\Printer\\\\Printer.ino"
+}
