@@ -232,6 +232,19 @@ char Blue = 255 - 200;  // 0xDC defult is 0x7D
 char current[3] = {Red, Green, Blue};
 
 
+/**********I2C write read buffer******************/
+uint8_t ReadArray[8] = {0};
+
+uint8_t WriteArray[8] = {0};
+
+int addr = 0x1A;
+
+// int offset = 0;
+
+// int bytes = 0;
+/************************************************/
+
+
 // String characters = "Initializing";
 
 ///////////////////////////////////////////////////////
@@ -253,6 +266,7 @@ void setup()
 
         // Set up the IO pins and interupts
         setupIO();
+        digitalWrite(M_ENABLE, HIGH);
 
         // set up Serial library at 115200 bps
         Serial.begin(115200);
@@ -758,6 +772,9 @@ void serialEvent()
                         //         BC_C(F("Command: Lamp Half Life Set to: "), String(iHalfLife));
                         //         break;
                         case '#':
+                                i = SerialReadInt();
+                                SetPatternMode(i);
+                                Serial.println("Sent display mode command.");
                                 break;
                         case '@':
                                 i = SerialReadInt();
@@ -785,6 +802,8 @@ void serialEvent()
                                 else
                                         break;
                                 break;
+                        case '!':
+
                         default:
                                 break;
                 }
@@ -1127,33 +1146,33 @@ int SerialReadInt()
         int j = 0;
         while (true)
         {
-                // See if we have serial data available:
-                if (Serial.available() > 0)
+        // See if we have serial data available:
+        if (Serial.available() > 0)
+        {
+
+                str[i] = Serial.read();
+
+                if (str[i] == 'C' )
                 {
-
-                        str[i] = Serial.read();
-
-                        if (str[i] == 'C' )
-                        {
-                                str[i]='\0';
-                                j = i + 1;
-                        }
-                        else if (str[i] == 'A')
-                        {
-                                Display_logic(F("Aborted"),2);
-                        }
-                        else if (str[i] == 'F')
-                        {
-                                Display_logic(F("Finished"),2);
-                        }
-                        else if (str[i] == '\n' || str[i] == '\0' || i == 31)
-                        {
-                                str[i] = '\0';
-                                break;
-                        }
-                        i++;
-                                   
+                        str[i]='\0';
+                        j = i + 1;
                 }
+                else if (str[i] == 'A')
+                {
+                        Display_logic(F("Aborted"),2);
+                }
+                else if (str[i] == 'F')
+                {
+                        Display_logic(F("Finished"),2);
+                }
+                else if (str[i] == '\n' || str[i] == '\0' || i == 31)
+                {
+                        str[i] = '\0';
+                        break;
+                }
+                i++;
+                                
+        }
                 
         }
         if(j>1)//from j = i + 1
@@ -1531,4 +1550,102 @@ void SetDLP(bool DLP)
         //  Serial.println("I2C third"); 
          //BC_V();
         }
+}
+
+
+
+void I2CRead(int addr, int offset, int bytes, uint8_t* RP)
+{
+    int i = 0;
+    if(bytes > 32)
+    {
+        bytes = 32;
+    }
+    Wire.begin();
+    Wire.beginTransmission(addr);
+    Wire.write(offset);
+    Wire.requestFrom(addr, bytes);
+    delay(bytes*2);
+    if(Wire.available()>0)
+    for(i=0;i<bytes;i++)
+    {
+        RP[i] = Wire.read();
+    }
+    Wire.endTransmission();
+}
+
+void I2CWrite(int addr, int offset, int data,  uint8_t * dataArray, size_t quantity)
+{
+
+    Wire.begin();
+    Wire.beginTransmission(addr);
+    Wire.write(offset|0x80);
+    if(quantity > 0)
+    {
+        Wire.write(dataArray, quantity);
+    }
+    else
+    Wire.write(data);
+    Wire.endTransmission();
+}
+
+void SetPatternMode(int Mode)
+{
+        switch(Mode)
+        {
+                case 0:I2CWrite(addr, 0x65, 0x0, WriteArray, 0);break;
+                case 1:
+        //1, Set display to pattern mode 
+        I2CWrite(addr, 0x69, 1, WriteArray, 0);
+        delay(100);
+        // //2, Set pattern display from external video
+        // I2CWrite(addr, 0x6F, 0, WriteArray, 0);
+        // delay(100);
+        // // 3, Number of LUT entries
+        // //  *Set pattern sequence once or repeat
+        // //  *Determines the number of pattern in the pattern sequence
+        // //  *if pattern mode is Flash mode, determine the number of images here
+        // WriteArray[0] = 0xc;
+        // WriteArray[1] = 0x1;
+        // WriteArray[2] = 0x3;
+        // WriteArray[3] = 0x0;
+        // I2CWrite(addr, 0x75, 0, WriteArray, 4);
+        // delay(100);
+        // //4, mode 0 1 2
+        // I2CWrite(addr, 0x70, 0, WriteArray, 0);
+        // delay(100);
+        // //5, Set the exposure and fame rate 
+        // WriteArray[0] = 0x1;
+        // WriteArray[1] = 0x1;
+        // WriteArray[2] = 0x1;
+        // WriteArray[3] = 0x1;
+        // // WriteArray[4] = 0xa;
+        // // WriteArray[5] = 0x1;
+        // // WriteArray[6] = 0x1;
+        // // WriteArray[7] = 0x4;
+        // I2CWrite(addr, 0x66, 0, WriteArray, 8);
+        // delay(100);
+        // //6, set up the image indexes if using flash mode 
+        //7, Write validation command
+        I2CWrite(addr, 0x7D, 0, WriteArray, 0);
+        delay(100);
+        // 8, read validation status and check response flags
+        delay(5000);//delay 5s 
+        I2CRead(addr, 0x7D, 1, ReadArray);
+        // if(ReadArray[0]==0)
+        // {
+                I2CWrite(addr, 0x65, 0x2, WriteArray, 0);
+                Serial.println("Pattern mode in!");
+        // }
+        break;
+        // else {Serial.println("Start pattern mode failed!");Serial.println(ReadArray[0]);}
+        case 2:
+        I2CWrite(addr, 0x65, 0x0, WriteArray, 0);
+        delay(100);
+        I2CWrite(addr, 0x69, 0, WriteArray, 0);break; // video mode
+        }
+
+        //10, validation passed. Start pattern sequence with cmmand 0x1A24
+        //11, send this command to stop the sequence
+        // return OnOff;
 }
