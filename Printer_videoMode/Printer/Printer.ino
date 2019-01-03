@@ -8,31 +8,30 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
-//#include <Adafruit_SSD1306.h>
+#include <Adafruit_SSD1306.h>
 //#include <stringz.h>
 /*******************************PinMap***************************************
-
-pinName         pinTo
-0               RXD
-1               TXD
-2               DC      8
-3               CS      9
-4               DIR
-5               STP
-6               MS3
-7               MS2
-8               MS1
-9               EN
-10              
-11              MOSI
-12              MISO
-13              SCK
-A0              OLED_RESET
-A1              Z_HOME
-A2              M_UP
-A3              M_DOWN
-A4              SDA
-A5              SCL
+pinName         pinTo           Rev1
+0               RXD             NA
+1               TXD             NA
+2               DC       	x_motor DIR
+3               CS       	x_motor STP
+4               DIR		motor ENABLE
+5               STP		z_motor STP	
+6               MS3		z_motor DIR
+7               MS2		x_SENSER	
+8               MS1		z_SENSER
+9               EN		CS
+10				  		DC
+11              MOSI		RES
+12              MISO		MOSI
+13              SCK		SCK
+A0              OLED_RESET	B_DOWN	
+A1              Z_HOME		B_UP
+A2              M_UP		B_LEFT
+A3              M_DOWN		B_RIGHT
+A4              SDA		SDA
+A5              SCL		SCL
 **********************************************************************************/
 /*****************Commands definition*******************************************
  * A Request Acknowledgement
@@ -89,19 +88,18 @@ A5              SCL
 #define OLED_MOSI   12
 #define OLED_CLK   13
 #define OLED_DC    10
-//#define OLED_CS    9
-#define LEDBreath   11
-//#define OLED_RESET 11
-//Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+#define OLED_CS    9
+#define OLED_RESET 11
+Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 // #define OLED_DC 8
 // #define OLED_CS 9
 // #define OLED_RESET A0
 // Adafruit_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
 
-// #if (SSD1306_LCDHEIGHT != 32)
-// #error("Height incorrect, please fix Adafruit_SSD1306.h!");
-// #endif
+#if (SSD1306_LCDHEIGHT != 32)
+#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#endif
 // Stepper Motor Outputs
 #define M_ENABLE 4
 // #define Z_MS1 2
@@ -126,8 +124,8 @@ A5              SCL
 #define Z_STEPDN HIGH
 
 // Stepper speeds in RPM
-#define Z_MAXSPEED 300
-#define Z_MINSPEED 1
+#define Z_MAXSPEED 200
+#define Z_MINSPEED 30
 #define Z_NORMALSPD 120
 #define Z_RESETSPD 200
 
@@ -232,9 +230,6 @@ char Green = 255; // 0xD7 defult is 0x78
 char Blue = 255 - 200;  // 0xDC defult is 0x7D
 char current[3] = {Red, Green, Blue};
 
-//for LED breath, breathing till raspi startup
-int FLAG_raspiStartup = 0;
-
 
 // String characters = "Initializing";
 
@@ -242,27 +237,26 @@ int FLAG_raspiStartup = 0;
 //
 // Program Setup
 //
-// void Display_logic(String characters, int size)
-//         {
-//                 display.clearDisplay();
-//                 display.setTextSize(size);
-//                 display.setTextColor(WHITE);
-//                 display.setCursor(0, 0);
-//                 display.println(characters);
-//                 display.display(); 
-//                 characters = "";
-//         }
+void Display_logic(String characters, int size)
+        {
+                display.clearDisplay();
+                display.setTextSize(size);
+                display.setTextColor(WHITE);
+                display.setCursor(0, 0);
+                display.println(characters);
+                display.display(); 
+                characters = "";
+        }
 void setup()
 {
 
         // Set up the IO pins and interupts
-
         setupIO();
 
         // set up Serial library at 115200 bps
         Serial.begin(115200);
-        // display.begin(SSD1306_SWITCHCAPVCC);
-        // Display_logic(F("Initializing..."),1);
+        display.begin(SSD1306_SWITCHCAPVCC);
+        Display_logic(F("Initializing..."),1);
         delay(50);
 
         //I2C start
@@ -274,14 +268,14 @@ void setup()
         Wire.endTransmission();
         delay(50);
         SetDLP(DLP);
-        //digitalWrite(OLED_RESET,1);
-        // display.clearDisplay();
-        // display.setTextSize(3);
-        // display.setTextColor(WHITE);
-        // display.setCursor(0, 4);
-        // display.println(F("NEPHO3D"));
-        // display.display();
-        // delay(50);
+        digitalWrite(OLED_RESET,1);
+        display.clearDisplay();
+        display.setTextSize(3);
+        display.setTextColor(WHITE);
+        display.setCursor(0, 4);
+        display.println(F("NEPHO3D"));
+        display.display();
+        delay(50);
         // set the data rate for the b9SoftwareSerial port
         // projectorSerial.begin(9600);
         ulLastCmdReceivedTime = millis(); // initilized
@@ -314,9 +308,10 @@ void setup()
         BC_R(); // Reset Status
 
 
-// #if (SSD1306_LCDHEIGHT != 32)
-// #error("Height incorrect, please fix Adafruit_SSD1306.h!");
-// #endif
+
+#if (SSD1306_LCDHEIGHT != 32)
+#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#endif
         BC_Y(); // Z Home Reference
         BC_Z(); // Current Z Position
         BC_D(); // Projector's X Resolution
@@ -331,11 +326,6 @@ void setup()
 
 void loop()
 {
-        while(!FLAG_raspiStartup)
-        {
-              LED_Breath(FLAG_raspiStartup);  
-        }
-        
         // Handle Manual input events
         if (bEnableManual == true)
         {
@@ -438,7 +428,7 @@ void serialEvent()
                                 //        iSlideTargetPos = SLIDEOPEN;
                                 //        iSlideStatus = SLIDE_POWERED;
                                 iCycle = CYCLE_OPEN;
-                                //Display_logic(F("StartPrinting..."),1);
+                                Display_logic(F("StartPrinting..."),1);
                                 break;
 
                         case 'c': // Request current Status
@@ -667,7 +657,7 @@ void serialEvent()
                                         bFindZero = true;
                                         iCycle = CYCLE_OFF;
                                         bEnableManual = true;
-                                        //Display_logic(F("StartPrinting..."),1);
+                                        Display_logic(F("StartPrinting..."),1);
 
                                 }
                                 break;
@@ -682,7 +672,7 @@ void serialEvent()
                                 {
                                         delay(1);
                                 } // wait until step LOW
-                                //Display_logic(F("Paused..."),2);
+                                Display_logic(F("Paused..."),2);
                                 iTargetPos = iCurPos;
                                 break;
 
@@ -950,10 +940,6 @@ void setupIO()
         // pinMode(Z_MS1, OUTPUT);
         // pinMode(Z_MS2, OUTPUT);
         // pinMode(Z_MS3, OUTPUT);
-        //LEDBREATH_CONFIG
-        pinMode(LEDBreath, OUTPUT);
-        pinMode(9, INPUT_PULLUP);
-
 }
 
 
@@ -1146,26 +1132,26 @@ int SerialReadInt()
 
                         str[i] = Serial.read();
 
-                if (str[i] == 'C' )
-                {
-                        str[i]='\0';
-                        j = i + 1;
-                }
-                else if (str[i] == 'A')
-                {
-                        //Display_logic(F("Aborted"),2);
-                }
-                else if (str[i] == 'F')
-                {
-                        //Display_logic(F("Finished"),2);
-                }
-                else if (str[i] == '\n' || str[i] == '\0' || i == 31)
-                {
-                        str[i] = '\0';
-                        break;
-                }
-                i++;
-                                
+                        if (str[i] == 'C' )
+                        {
+                                str[i]='\0';
+                                j = i + 1;
+                        }
+                        else if (str[i] == 'A')
+                        {
+                                Display_logic(F("Aborted"),2);
+                        }
+                        else if (str[i] == 'F')
+                        {
+                                Display_logic(F("Finished"),2);
+                        }
+                        else if (str[i] == '\n' || str[i] == '\0' || i == 31)
+                        {
+                                str[i] = '\0';
+                                break;
+                        }
+                        i++;
+                                   
                 }
                 
         }
@@ -1188,9 +1174,10 @@ int SerialReadInt()
                         j++;
                         
                }
-              //Display_logic("Layer:"+current_layer+"\n"+"TimeRemaining:"+time_left,1);
+               Display_logic("Layer:"+current_layer+"\n"+"TimeRemaining:"+time_left,1);
 
         }
+
 
         return (atoi(str));
 }
@@ -1543,19 +1530,4 @@ void SetDLP(bool DLP)
         //  Serial.println("I2C third"); 
          //BC_V();
         }
-}
-
-void LED_Breath(int FLAG_raspiStartup)
-{
-        //
-        for (int value = 1 ; (value < 255) && (FLAG_raspiStartup == 0); value++){  
-                analogWrite(LEDBreath, value);
-                delay(7);
-                FLAG_raspiStartup = digitalRead(9);
-        }
-        for (int value = 255 ; (value >1) && (FLAG_raspiStartup == 0); value--){  
-                analogWrite(LEDBreath, value);  
-                delay(7);
-                FLAG_raspiStartup = digitalRead(9);  
-        }  
 }

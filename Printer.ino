@@ -126,7 +126,7 @@ Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
 // Stepper speeds in RPM
 #define Z_MAXSPEED 200
-#define Z_MINSPEED 30
+#define Z_MINSPEED 1
 #define Z_NORMALSPD 120
 #define Z_RESETSPD 200
 
@@ -266,7 +266,7 @@ void setup()
 
         // Set up the IO pins and interupts
         setupIO();
-        digitalWrite(M_ENABLE, HIGH);
+        //digitalWrite(M_ENABLE, HIGH);
 
         // set up Serial library at 115200 bps
         Serial.begin(115200);
