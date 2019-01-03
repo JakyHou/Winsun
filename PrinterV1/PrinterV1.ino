@@ -331,10 +331,8 @@ void setup()
 
 void loop()
 {
-        while(!FLAG_raspiStartup)
-        {
-              LED_Breath(FLAG_raspiStartup);  
-        }
+
+        LED_Breath(FLAG_raspiStartup);  
         
         // Handle Manual input events
         if (bEnableManual == true)
@@ -621,6 +619,7 @@ void serialEvent()
                                         //            projectorSerial.write("V99S0002");//poweroff
                                         DLP = false;
                                         SetDLP(DLP);
+                                        FLAG_raspiStartup = 1;
                                 }
                                 else if (i == 1)
                                 {
@@ -952,7 +951,6 @@ void setupIO()
         // pinMode(Z_MS3, OUTPUT);
         //LEDBREATH_CONFIG
         pinMode(LEDBreath, OUTPUT);
-        pinMode(9, INPUT_PULLUP);
 
 }
 
@@ -1550,12 +1548,11 @@ void LED_Breath(int FLAG_raspiStartup)
         //
         for (int value = 1 ; (value < 255) && (FLAG_raspiStartup == 0); value++){  
                 analogWrite(LEDBreath, value);
-                delay(7);
-                FLAG_raspiStartup = digitalRead(9);
+                delay(6);
         }
         for (int value = 255 ; (value >1) && (FLAG_raspiStartup == 0); value--){  
                 analogWrite(LEDBreath, value);  
-                delay(7);
-                FLAG_raspiStartup = digitalRead(9);  
+                delay(6);
         }  
+        analogWrite(LEDBreath, 255);
 }
