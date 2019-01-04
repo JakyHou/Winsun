@@ -1,0 +1,1 @@
+sudo dpkg -i -B xinput-calibrator_0.7.5-1_armhf.deb

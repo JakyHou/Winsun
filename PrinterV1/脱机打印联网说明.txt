@@ -1,0 +1,35 @@
+单击浏览:
+system("sudo iw dev wlan0 scan|less > /home/pi/Nepho3DConfig/Wifi/Wifi ");
+导出网络信息到WiFi文件
+system("grep -E SSID /home/pi/Nepho3DConfig/Wifi/Wifi >/home/pi/Nepho3DConfig/Wifi/wifi_ssid");
+筛选Wifi文件,获取网络名称,ssid等信息导出到wifi_ssid文件
+system("grep -v x00 /home/pi/Nepho3DConfig/Wifi/wifi_ssid >/home/pi/Nepho3DConfig/Wifi/Wifi");
+筛选wifi_ssid文件,获取可连网络名称到Wifi文件
+
+读取Wifi文件并显示可连网络
+
+单击连接:
+获取选择的网络名称;
+获取填入的网络密码
+
+    system("sudo rm -rf /etc/wpa_supplicant/wpa_supplicant.conf");
+删除/etc/wpa_supplicant/wpa_supplicant.conf文件
+
+    system("sudo cp /etc/wpa_supplicant/bl_wpa_supplicant.conf /home/pi/Nepho3DConfig/Wifi/bl_wpa_supplicant.conf");
+从/etc/wpa_supplicant/路径下拷贝bl_wpa_supplicant.conf到/home/pi/Nepho3DConfig/Wifi/路径下
+
+system("sudo cp /home/pi/Nepho3DConfig/Wifi/bl_wpa_supplicant.conf /etc/wpa_supplicant/wpa_supplicant.conf");
+根据网络名称+密码完善bl_wpa_supplicant.conf文件后重命名导入到/etc/wpa_supplicant/wpa_supplicant/wpa_supplicant.conf
+
+    return system("sudo wpa_supplicant -D wext -i wlan0 -c /etc/wpa_supplicant/wpa_supplicant.conf -B");
+重新配置网络
+
+
+检测连接情况:
+system("iwconfig > /home/pi/Nepho3DConfig/Wifi/WifiCheck ");
+导出网络连接情况到WifiCheck文件
+
+    system("grep -E ESSID /home/pi/Nepho3DConfig/Wifi/WifiCheck >/home/pi/Nepho3DConfig/Wifi/WifiCheck2");
+筛选WifiCheck文件,获取必要数据并导出到WifiCheck2文件
+
+读取WifiCheck2获取网络连接情况

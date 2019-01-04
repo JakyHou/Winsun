@@ -1,0 +1,5 @@
+1	将setup-pi3b+tft.tar 放到 /home/pi/ 然后执行 sudo tar -xvf setup-pi3b+tft.tar -C /
+2 	sudo chmod -R 777 LCD_driver-master
+3	./LCD35_show
+4	lcd_setup/setup.sh
+5	reboot

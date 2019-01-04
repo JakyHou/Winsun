@@ -1,1 +1,10 @@
 修改显示屏驱动板，去掉D1，将R8 放到D1位置
+
+pin 11 drive LEDbutton
+
+启动画面修改
+1	config.txt 设置disable_splash
+2	cmdline.txt设置相关启动项的屏蔽 quiet splash plymouth.ignore-serial-consoles logo.nologo loglevel=3 disable_overscan=1
+3	使用usr/share/plymounth/themes/pix启动画面替换掉splash.png
+4       fbcp添加到启动任务https://blog.csdn.net/qq_38632611/article/details/79084287
+	/etc/systemd/system/splashscreen.service

@@ -1,0 +1,2 @@
+SUBSYSTEM=="input",ATTRS{name}=="ft6x06_ts",ENV{DEVNAME}=="*event*",SYMLINK+="input/touchscreen"
+
