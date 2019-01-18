@@ -1,3 +1,6 @@
+#include <Arduino.h>
+#line 1 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+#line 1 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
 //  includes
 #include <b9SoftwareSerial.h>
 #include <EEPROM.h>
@@ -252,6 +255,95 @@ int FLAG_raspiStartup =0;
 //                 display.display(); 
 //                 characters = "";
 //         }
+#line 255 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void setup();
+#line 332 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void loop();
+#line 395 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void serialEvent();
+#line 806 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void HandleBuildCycles();
+#line 927 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void setupIO();
+#line 963 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void setZero(bool bFromAbove);
+#line 1020 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void updateMotors();
+#line 1045 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void setZSpeed(int iRPM);
+#line 1054 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void ZStepRelease();
+#line 1067 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void ZStep(int iDir);
+#line 1131 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+int SerialReadInt();
+#line 1201 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void HandleTimedBroadcasts();
+#line 1234 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void loadEEPromSettings();
+#line 1280 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void storeDefaults();
+#line 1292 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void resetFactoryDefaults();
+#line 1302 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void storeRefZOffset();
+#line 1306 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void storeRefNativeX();
+#line 1310 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void storeRefNativeY();
+#line 1314 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void storeRefXYPixelSize();
+#line 1318 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void storeHalfLife();
+#line 1329 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_String(String sString);
+#line 1335 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_String(const __FlashStringHelper *s, String sVariable);
+#line 1342 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_A();
+#line 1349 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_C(String sComment);
+#line 1356 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_C(const __FlashStringHelper *s, String sVariable);
+#line 1367 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_D();
+#line 1374 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_E();
+#line 1381 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_F();
+#line 1388 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_H();
+#line 1395 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_I();
+#line 1402 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_J();
+#line 1409 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_K();
+#line 1416 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_L();
+#line 1426 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_M();
+#line 1433 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_P();
+#line 1449 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_Q();
+#line 1456 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_R();
+#line 1479 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_U(int iFault);
+#line 1491 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_V();
+#line 1504 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_X(int iDiff);
+#line 1511 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_Y();
+#line 1518 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void BC_Z();
+#line 1524 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void SetDLP(bool DLP);
+#line 1546 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+void LED_Breath(int FLAG_raspiStartup);
+#line 255 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
 void setup()
 {
 
@@ -1556,3 +1648,4 @@ void LED_Breath(int FLAG_raspiStartup)
         }  
         analogWrite(LEDBreath, 255);
 }
+

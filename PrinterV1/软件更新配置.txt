@@ -1,0 +1,13 @@
+1	avrdude： sudo apt-get install avrdude
+2	进行控制板更新 
+	sudo killall WINSUN
+	sudo killall PicShow
+	avrdude -c avrdude.conf -v -p atmega328p -c arduino -P /dev/ttyUSB0 -b 115200 -D -U flash:w:/home/pi/Nepho3DConfig/Update/firmware.hex:i  
+3	判断更新是否成功
+	if [ $? -ne 1 ] 
+	then
+		echo "success"
+	else
+		echo "failed"
+	fi
+	exit

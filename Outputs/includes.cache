@@ -1,0 +1,127 @@
+[
+  {
+    "Sourcefile": "",
+    "Include": "",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\cores\\arduino"
+  },
+  {
+    "Sourcefile": "",
+    "Include": "",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\variants\\standard"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "b9SoftwareSerial.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\libraries\\b9"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "EEPROM.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\EEPROM\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "EEPROMAnything.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\libraries\\EEPROManything"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "PinChangeInt.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\libraries\\PinChangeInt-master"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "TimerOne.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\libraries\\TimerOne-master"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "Servo.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "Wire.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "SPI.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "Adafruit_GFX.h",
+    "Includepath": "D:\\Program Files (x86)\\Arduino\\libraries\\Adafruit-GFX-Library-master"
+  },
+  {
+    "Sourcefile": "C:\\Users\\Jason\\Desktop\\Printer\\Outputs\\sketch\\PrinterV1.ino.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\b9\\b9SoftwareSerial.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\TimerOne-master\\TimerOne.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src\\avr\\Servo.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src\\nrf52\\Servo.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src\\sam\\Servo.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src\\samd\\Servo.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Servo\\src\\stm32f4\\Servo.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src\\Wire.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\Wire\\src\\utility\\twi.c",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src\\SPI.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Adafruit-GFX-Library-master\\Adafruit_GFX.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Adafruit-GFX-Library-master\\Adafruit_SPITFT.cpp",
+    "Include": "",
+    "Includepath": ""
+  },
+  {
+    "Sourcefile": "D:\\Program Files (x86)\\Arduino\\libraries\\Adafruit-GFX-Library-master\\glcdfont.c",
+    "Include": "",
+    "Includepath": ""
+  }
+]

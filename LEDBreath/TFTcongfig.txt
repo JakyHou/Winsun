@@ -8,3 +8,14 @@ pin 11 drive LEDbutton
 3	使用usr/share/plymounth/themes/pix启动画面替换掉splash.png
 4       fbcp添加到启动任务https://blog.csdn.net/qq_38632611/article/details/79084287
 	/etc/systemd/system/splashscreen.service
+	[Unit]
+Description=Splashscreen
+DefaultDependencies=no
+After=basic.target
+[Service]
+ExecStart=/usr/bin/fbi -d /dev/fb0 --noverbose -a /opt/splash.png
+StandardInput=tty
+StandardOutput=tty
+[Install]
+WantedBy=sysinit.target
+5 	开启Samba 

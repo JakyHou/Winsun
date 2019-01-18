@@ -1,13 +1,15 @@
+# 1 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
+# 1 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
 //  includes
-#include <b9SoftwareSerial.h>
-#include <EEPROM.h>
-#include <EEPROMAnything.h>
-#include <PinChangeInt.h>
-#include <TimerOne.h>
-#include <Servo.h>
-#include <Wire.h>
-#include <SPI.h>
-#include <Adafruit_GFX.h>
+# 3 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 4 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 5 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 6 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 7 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 8 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 9 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 10 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
+# 11 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino" 2
 //#include <Adafruit_SSD1306.h>
 //#include <stringz.h>
 /*******************************PinMap***************************************
@@ -57,40 +59,33 @@ A5              SCL
  * T Toggle verbose Text Comments
  * U Reset the projectors calibrated xy pixel size in microns //
  * V Set Vat Position (0 - 100 %) //
- * W Set Print Cycle Opening Speed \\
- * X Set Print Cycle Closing Speed \\
- * Y Reset z Axis home reference
+ * W Set Print Cycle Opening Speed \ * X Set Print Cycle Closing Speed \ * Y Reset z Axis home reference
+nce
  * Z Set Z Axis speed
  * $ Reset Projector's Half Life value //
- * # \\
- * @ Set DLP current
+ * # \ * @ Set DLP current
+t
  * 
  * 
  * */
 
-// EEPROM (used for storing calibrated Z home offset
-#define EE_SCHEMA 112
-#define EE_ADDRESS_SCHEMA 0
-#define EE_ADDRESS_Z_HOME 2
-#define EE_ADDRESS_NATIVEX 4
-#define EE_ADDRESS_NATIVEY 6
-#define EE_ADDRESS_XYPSIZE 8
-#define EE_ADDRESS_HALFLIFE 10
 
+// EEPROM (used for storing calibrated Z home offset
+# 80 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
 // Optical sensor inputs
 //#define X_HOME    A0  //18
-#define Z_HOME 8 //19
+
 //define slider INIT_DONE
 // #define INIT_DOWN 10
 // Manual Toggle switch inputs
-#define B_UP A1   //20
-#define B_DOWN A0 //21
+
+
 // defines
-#define OLED_MOSI   12
-#define OLED_CLK   13
-#define OLED_DC    10
+
+
+
 //#define OLED_CS    9
-#define LEDBreath   11
+
 //#define OLED_RESET 11
 //Adafruit_SSD1306 display(OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
@@ -103,64 +98,55 @@ A5              SCL
 // #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 // #endif
 // Stepper Motor Outputs
-#define M_ENABLE 4
+
 // #define Z_MS1 2
 // #define Z_MS2 4
 // #define Z_MS3 3
-#define Z_STEP 5
-#define Z_DIR 6
+
+
 
 // Projector's RS-232 Port I/O pins
 // #define PROJECTOR_RX 12
 // #define PROJECTOR_TX 13
 
 // Stepper Mode
-#define Z_STEP_FULL 0
-#define Z_STEP_HALF 1
-#define Z_STEP_QTR 2
-#define Z_STEP_8TH 3
-#define Z_STEP_16TH 4
+
+
+
+
+
 
 // Stepper Direction
-#define Z_STEPUP LOW
-#define Z_STEPDN HIGH
+
+
 
 // Stepper speeds in RPM
-#define Z_MAXSPEED 300
-#define Z_MINSPEED 1
-#define Z_NORMALSPD 120
-#define Z_RESETSPD 200
+
+
+
+
 
 // Print Cycle states
-#define CYCLE_OFF 0
-#define CYCLE_OPEN 1
-#define CYCLE_DOWN 2
-#define CYCLE_SETTLE 3
-#define CYCLE_EXPOSE 4
-#define CYCLE_RELEASE 5
-#define CYCLE_UP 6
-#define CYCLE_BREATHE 7
-#define CYCLE_FINISH 8
-
+# 145 "C:\\Users\\Jason\\Desktop\\Printer\\PrinterV1\\PrinterV1.ino"
 // Maximum time spent in print cycle without
 // a command before we shut off projector as a saftey precaution
-#define MAX_EXPOSURE_WATCHDOG 240000 // 240 seconds
+
 
 // Z Movement states
-#define Z_MOVING 0
-#define Z_ARRIVED 1
-#define Z_BROADCAST 2
+
+
+
 
 // Motion state variables
-int iZStatus = Z_ARRIVED;
+int iZStatus = 1;
 //int iSlideStatus = SLIDE_ARRIVED;
 bool bReset = false;
 
 // Persistent Calibration and setup settings
-#define XNATIVEDEFAULT 1024
-#define YNATIVEDEFAULT 768
-#define XYPSIZEDEFAULT 100
-#define HALFLIFEDEFAULT 2000 // Hours before projector lamp output is reduced to 1/2 original value
+
+
+
+
 
 int iNativeX = 0;
 int iNativeY = 0;
@@ -168,15 +154,15 @@ int iXYPixelSize = 0;
 int iHalfLife = 2000;
 
 // Z Axis Position & Movement variables
-#define ZHOMEOFFSETDEFAULT 3100
+
 int iRefZeroOffset = -1; // Load persistant value from EEPROM during setup
 int iUpperZLimit = 32000;
 int iLowerZLimit = -500;
 int iCurPos = 0;
 int iLastCurPos = 0;
 int iTargetPos = 0;
-int iZDriveSpeedCmd = Z_MAXSPEED;
-int lastStepPulse = LOW;
+int iZDriveSpeedCmd = 300;
+int lastStepPulse = 0x0;
 
 unsigned long ulLastInteruptTime = millis();
 
@@ -186,7 +172,7 @@ boolean bFindZero = false;
 boolean bEnableManual = true;
 
 // Cycle variables
-int iCycle = CYCLE_OFF;
+int iCycle = 0;
 int iLastCuredPos = 0;
 int iNextCurePos = 0;
 
@@ -196,8 +182,8 @@ unsigned long ulBreatheStart = millis();
 unsigned long ulBreatheDur = 0;
 unsigned long ulSettleStart = millis();
 unsigned long ulSettleDur = 0;
-int iRaiseSpeed = Z_NORMALSPD;
-int iLowerSpeed = Z_NORMALSPD;
+int iRaiseSpeed = 120;
+int iLowerSpeed = 120;
 
 // Projector RS-232 interface & status variables
 // b9SoftwareSerial projectorSerial = b9SoftwareSerial(PROJECTOR_RX, PROJECTOR_TX);
@@ -210,8 +196,8 @@ int iLowerSpeed = Z_NORMALSPD;
 // This reset can be commanded manually with P7 or automaticaly with the B (base) command
 //bool bProjectorNeedsReset = false;
 //bool bIsMirrored = false;
-int iProjectorPwr = -1;                         // 0 = OFF, 1 = ON, -1 = ?
-int iLampHours = -1;                            // reported lamp hours, -1 = ?
+int iProjectorPwr = -1; // 0 = OFF, 1 = ON, -1 = ?
+int iLampHours = -1; // reported lamp hours, -1 = ?
 unsigned long ulLastCmdReceivedTime = millis(); // reset every time we get a cmd from the host
 
 // Broadcast variables
@@ -227,9 +213,9 @@ bool DLP = false;
 
 
 //set LED current, current goes with the value the MAXIUM is 0xFF
-char Red = 255;   // 0xD8 defult is 0x97
+char Red = 255; // 0xD8 defult is 0x97
 char Green = 255; // 0xD7 defult is 0x78
-char Blue = 255;  // 0xDC defult is 0x7D
+char Blue = 255; // 0xDC defult is 0x7D
 char current[3] = {Red, Green, Blue};
 
 //for LED breath, breathing till raspi startup
@@ -332,30 +318,30 @@ void setup()
 void loop()
 {
 
-        LED_Breath(FLAG_raspiStartup);  
-        
+        LED_Breath(FLAG_raspiStartup);
+
         // Handle Manual input events
         if (bEnableManual == true)
         {
 
                 // Control Z axis Stepper
-                if (!digitalRead(B_DOWN))
+                if (!digitalRead(A0 /*21*/))
                 { // Commanded to go lower, -Z
                         iTargetPos = iCurPos - 1;
-                        iZStatus = Z_MOVING;
+                        iZStatus = 0;
                 }
-                else if (!digitalRead(B_UP))
+                else if (!digitalRead(A1 /*20*/))
                 { // Commanded to higher, +Z
                         iTargetPos = iCurPos + 1;
-                        iZStatus = Z_MOVING;
+                        iZStatus = 0;
                         //val1=4;DUOJI=true;
                 }
         }
 
         // Have we arrived at a target Z Position?
-        if (iZStatus == Z_BROADCAST)
+        if (iZStatus == 2)
         {
-                iZStatus = Z_ARRIVED;
+                iZStatus = 1;
                 BC_Z();
         }
 
@@ -369,7 +355,7 @@ void loop()
                 //    setSlideZero();
                 bReset = true;
                 iLastCuredPos = 0;
-                iZStatus = Z_BROADCAST;
+                iZStatus = 2;
                 BC_R();
         }
 
@@ -409,7 +395,7 @@ void serialEvent()
 
                         case 'a': // Request Acknowledgement
                         case 'A':
-                                BC_C(F("Command:  Acknowledge"));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command:  Acknowledge"); &__c[0];})))));
                                 BC_V(); // Version & Model info
                                 BC_A(); // Projector control
                                 BC_J(); // Shutter available
@@ -431,17 +417,17 @@ void serialEvent()
                                 bEnableManual = false;
                                 iLastCuredPos = 0;
                                 iNextCurePos = SerialReadInt();
-                                BC_C(F("Command: Cycle to initial Base Layer at: "), String(iNextCurePos));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Cycle to initial Base Layer at: "); &__c[0];})))), String(iNextCurePos));
                                 //        iSlideSpeed = iSlideOpenSpeed;
                                 //        iSlideTargetPos = SLIDEOPEN;
                                 //        iSlideStatus = SLIDE_POWERED;
-                                iCycle = CYCLE_OPEN;
+                                iCycle = 1;
                                 //Display_logic(F("StartPrinting..."),1);
                                 break;
 
                         case 'c': // Request current Status
                         case 'C':
-                                BC_C(F("Command:  Request Current Status"));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command:  Request Current Status"); &__c[0];})))));
                                 BC_Z();
                                 //        BC_S();
                                 break;
@@ -451,7 +437,7 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i >= 0 && i <= 60000)
                                         ulBreatheDur = i;
-                                BC_C(F("Command: Breathe Delay set to "), String(ulBreatheDur));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Breathe Delay set to "); &__c[0];})))), String(ulBreatheDur));
                                 break;
 
                         case 'e': // Set "settle" Delay time, a pause before sending "Cycle Complete"
@@ -459,7 +445,7 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i >= 0 && i <= 60000)
                                         ulSettleDur = i;
-                                BC_C(F("Command: Settle Delay set to "), String(ulSettleDur));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Settle Delay set to "); &__c[0];})))), String(ulSettleDur));
                                 break;
 
                         case 'f': // Position after building Final layer
@@ -467,18 +453,18 @@ void serialEvent()
                                 bEnableManual = false;
                                 iLastCuredPos = iNextCurePos;
                                 iNextCurePos = SerialReadInt();
-                                BC_C(F("Command: Release and move to final position at: "), String(iNextCurePos));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Release and move to final position at: "); &__c[0];})))), String(iNextCurePos));
                                 //        iSlideSpeed = iSlideCloseSpeed;
                                 //        iSlideTargetPos = SLIDECLOSED;
                                 //        iSlideStatus = SLIDE_POWERED;
-                                iCycle = CYCLE_FINISH;
+                                iCycle = 8;
                                 break;
 
                         case 'g': // Goto Z position
                         case 'G':
                                 setZSpeed(iZDriveSpeedCmd);
                                 i = SerialReadInt();
-                                while (lastStepPulse == HIGH)
+                                while (lastStepPulse == 0x1)
                                 {
                                         delay(1);
                                 } // wait until step LOW
@@ -488,8 +474,8 @@ void serialEvent()
                                         iTargetPos = iUpperZLimit;
                                 else if (iTargetPos < iLowerZLimit)
                                         iTargetPos = iLowerZLimit;
-                                iZStatus = Z_MOVING;
-                                BC_C(F("Command: Goto Z position at: "), String(iTargetPos));
+                                iZStatus = 0;
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Goto Z position at: "); &__c[0];})))), String(iTargetPos));
                                 break;
 
                         // case 'h': // Reset the projectors native X Resolution
@@ -511,7 +497,7 @@ void serialEvent()
                                         iNativeY = i;
                                         storeRefNativeY(); // store new value in persistant EEPROM
                                 }
-                                BC_C(F("Command: Native Y Resolution Set To "), String(iNativeY));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Native Y Resolution Set To "); &__c[0];})))), String(iNativeY));
                                 break;
 
                         case 'j': // Set Cycle Ready Gap
@@ -519,42 +505,42 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i >= 0 && i <= 1500)
                                         iReadyGap = i;
-                                BC_C(F("Command: Reposition Gap set to: "), String(iReadyGap));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Reposition Gap set to: "); &__c[0];})))), String(iReadyGap));
                                 break;
 
                         case 'k': // Set Print Cycle Raise Speed
                         case 'K':
                                 i = SerialReadInt();
-                                if (i >= Z_MINSPEED && i <= Z_MAXSPEED)
+                                if (i >= 1 && i <= 300)
                                 {
                                         // float dPercent = (float)i/100.0;
                                         //float dRange = Z_MAXSPEED - Z_MINSPEED;
                                         // iRaiseSpeed = (dPercent * dRange) + Z_MINSPEED;
                                         iRaiseSpeed = i;
                                         //BC_C(F("Command: Percent Raise Speed Set To "), String(i));
-                                        BC_C(F("Command: RPM Raise Speed Set To "), String(iRaiseSpeed));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: RPM Raise Speed Set To "); &__c[0];})))), String(iRaiseSpeed));
                                 }
                                 else
                                 {
-                                        BC_C(F("Command: Error, Percent Raise Speed Out of Range"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Error, Percent Raise Speed Out of Range"); &__c[0];})))));
                                 }
                                 break;
 
                         case 'l': // Set Print Cycle Lower Speed
                         case 'L':
                                 i = SerialReadInt();
-                                if (i > Z_MINSPEED && i <= Z_MAXSPEED)
+                                if (i > 1 && i <= 300)
                                 {
                                         //float dPercent = (float)i/100.0;
                                         //float dRange = Z_MAXSPEED - Z_MINSPEED;
                                         //iLowerSpeed = (dPercent * dRange) + Z_MINSPEED;
                                         iLowerSpeed = i;
                                         //BC_C(F("Command: Percent Lower Speed Set To "), String(i));
-                                        BC_C(F("Command: RPM Lower Speed Set To "), String(iLowerSpeed));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: RPM Lower Speed Set To "); &__c[0];})))), String(iLowerSpeed));
                                 }
                                 else
                                 {
-                                        BC_C(F("Command: Error, Percent Lower Speed Out of Range"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Error, Percent Lower Speed Out of Range"); &__c[0];})))));
                                 }
                                 break;
 
@@ -564,12 +550,12 @@ void serialEvent()
                                 if (i > 0)
                                 {
                                         bEnableManual = true;
-                                        BC_C(F("Command: Manual Controls Activated."));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Manual Controls Activated."); &__c[0];})))));
                                 }
                                 else
                                 {
                                         bEnableManual = false;
-                                        BC_C(F("Command: Manual Controls Deactivated."));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Manual Controls Deactivated."); &__c[0];})))));
                                 }
                                 break;
 
@@ -581,13 +567,13 @@ void serialEvent()
                                 iNextCurePos = SerialReadInt();
                                 if (iNextCurePos < iLastCuredPos)
                                 { // This should never happen, but if it does reset iNextCurePos to use the last increment
-                                        BC_C(F("ERROR:  Invalid Command: Release and cycle to Next Layer at: "), String(iNextCurePos));
-                                        BC_C(F("NOTE:  Reset Next Cure Position to last cure position + last increment."));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("ERROR:  Invalid Command: Release and cycle to Next Layer at: "); &__c[0];})))), String(iNextCurePos));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("NOTE:  Reset Next Cure Position to last cure position + last increment."); &__c[0];})))));
                                         iNextCurePos = iLastCuredPos + iDiff;
                                 }
-                                BC_C(F("Command: Release and cycle to Next Layer at: "), String(iNextCurePos));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Release and cycle to Next Layer at: "); &__c[0];})))), String(iNextCurePos));
                                 //        iSlideSpeed = iSlideCloseSpeed;
-                                iCycle = CYCLE_RELEASE;
+                                iCycle = 5;
                                 //        iSlideTargetPos = SLIDECLOSED;
                                 //        iSlideStatus = SLIDE_POWERED;
                                 break;
@@ -597,15 +583,15 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i >= -1000 && i <= iUpperZLimit)
                                 { // 1 to iUpperZLimit valid range
-                                        BC_C(F("Command: Resetting current Z position to: "), String(i));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Resetting current Z position to: "); &__c[0];})))), String(i));
                                         iTargetPos = iCurPos = i;
                                         iNextCurePos = iLastCuredPos = i; //Reseting this incase we're in the middle of a print
-                                        bReset = true;                    // not realy, but we are tricking the system into believing it knows where it's at
+                                        bReset = true; // not realy, but we are tricking the system into believing it knows where it's at
                                         BC_Z();
                                 }
                                 else
                                 {
-                                        BC_C(F("Error: Reset current Z position value out of limits.  Ignored."));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Error: Reset current Z position value out of limits.  Ignored."); &__c[0];})))));
                                 }
                                 break;
 
@@ -614,7 +600,7 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i == 0)
                                 {
-                                        BC_C(F("Command: Turning Projector OFF"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Turning Projector OFF"); &__c[0];})))));
                                         // projectorSerial.write("\r$pow=off#\r");
                                         //            projectorSerial.write("V99S0002");//poweroff
                                         DLP = false;
@@ -623,7 +609,7 @@ void serialEvent()
                                 }
                                 else if (i == 1)
                                 {
-                                        BC_C(F("Command: Turning Projector ON"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Turning Projector ON"); &__c[0];})))));
                                         // projectorSerial.write("\r$pow=on#\r");
                                         //projectorSerial.write("V99S0001\r");//poweron
                                         //iProjectorPwr =1;
@@ -637,18 +623,18 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i == 0)
                                 {
-                                        BC_C(F("Command: Turning Broadcasts OFF"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Turning Broadcasts OFF"); &__c[0];})))));
                                         iBC_Interval = i;
                                 }
                                 else if (i > 999 && i < 60001)
                                 { // 1 to 60 sec valid range
                                         iBC_Interval = i;
-                                        BC_C(F("Command: Broadcast Interval set to: "), String(iBC_Interval));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Broadcast Interval set to: "); &__c[0];})))), String(iBC_Interval));
                                         ulLastTimedBroadcastTime = 0;
                                 }
                                 else
                                 {
-                                        BC_C(F("Command: Broadcast Interval is: "), String(iBC_Interval));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Broadcast Interval is: "); &__c[0];})))), String(iBC_Interval));
                                 }
                                 break;
 
@@ -657,14 +643,14 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i == 99)
                                 {
-                                        BC_C(F("Command: Reset Factory Defaults"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Reset Factory Defaults"); &__c[0];})))));
                                         resetFactoryDefaults();
                                 }
                                 else
                                 {
-                                        BC_C(F("Command: Reset Home Positions"));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Reset Home Positions"); &__c[0];})))));
                                         bFindZero = true;
-                                        iCycle = CYCLE_OFF;
+                                        iCycle = 0;
                                         bEnableManual = true;
                                         //Display_logic(F("StartPrinting..."),1);
 
@@ -673,11 +659,11 @@ void serialEvent()
 
                         case 's': // Stop all motion, activate manual controls
                         case 'S':
-                                BC_C(F("Command: STOP"));
-                                iCycle = CYCLE_OFF;
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: STOP"); &__c[0];})))));
+                                iCycle = 0;
                                 bEnableManual = true;
                                 //        iSlideTargetPos = iSlideCurPos;
-                                while (lastStepPulse == HIGH)
+                                while (lastStepPulse == 0x1)
                                 {
                                         delay(1);
                                 } // wait until step LOW
@@ -691,11 +677,11 @@ void serialEvent()
                                 if (i > 0)
                                 {
                                         bVerbose = true;
-                                        BC_C(F("Command: Verbose Text Comments Activated."));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Verbose Text Comments Activated."); &__c[0];})))));
                                 }
                                 else
                                 {
-                                        BC_C(F("Command: Verbose Text Comments Deactivated."));
+                                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Verbose Text Comments Deactivated."); &__c[0];})))));
                                         bVerbose = false;
                                 }
                                 break;
@@ -724,13 +710,13 @@ void serialEvent()
                         case 'w': // Set Print Cycle Opening Speed
                         case 'W':
                                 i = SerialReadInt();
-                                BC_C(F("Hello how are W"));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Hello how are W"); &__c[0];})))));
                                 break;
 
                         case 'x': // Set Print Cycle Closing Speed
                         case 'X':
                                 i = SerialReadInt();
-                                BC_C(F("Hello how are x"));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Hello how are x"); &__c[0];})))));
                                 break;
 
                         case 'y': // Reset z Axis home reference
@@ -744,16 +730,16 @@ void serialEvent()
                                         iRefZeroOffset = i;
                                         storeRefZOffset(); // store new value in persistant EEPROM
                                 }
-                                BC_C(F("Command: Z Home Reference Set To "), String(iRefZeroOffset));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Command: Z Home Reference Set To "); &__c[0];})))), String(iRefZeroOffset));
                                 break;
 
                         case 'z': // Set Z Axis speed
                         case 'Z':
                                 i = SerialReadInt();
-                                if (i >= Z_MINSPEED && i <= Z_MAXSPEED)
+                                if (i >= 1 && i <= 300)
                                         iZDriveSpeedCmd = i;
                                 setZSpeed(iZDriveSpeedCmd);
-                                BC_C(F("Current z Drive Speed set to "), String(iZDriveSpeedCmd));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Current z Drive Speed set to "); &__c[0];})))), String(iZDriveSpeedCmd));
                                 break;
 
                         // case '$': // Reset Projector's Half Life value
@@ -771,7 +757,7 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i >= 0 && i <= 255)
                                 {
-                                        
+
                                         if (0 == i || i == current[2])
                                         {
                                             DLP = (i == 0)?false:true;
@@ -807,95 +793,95 @@ void HandleBuildCycles()
 {
         switch (iCycle)
         {
-                case CYCLE_OPEN:
+                case 1:
                         //      if(iSlideStatus==SLIDE_ARRIVED){
                         // We've reached the open position
-                        BC_C(F("Shutter Open"));
+                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Shutter Open"); &__c[0];})))));
                         if (iCurPos != iNextCurePos)
                         { // we need to lower down to the next cure position
-                                BC_C(F("Lowering Platform to next layer position."));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Lowering Platform to next layer position."); &__c[0];})))));
                                 iTargetPos = iNextCurePos;
                                 setZSpeed(iLowerSpeed);
-                                iZStatus = Z_MOVING;
+                                iZStatus = 0;
                         }
-                        iCycle = CYCLE_DOWN;
+                        iCycle = 2;
                         //      }
                         break;
 
-                case CYCLE_DOWN:
+                case 2:
                         if (iCurPos == iTargetPos)
                         {
                                 // We've reached the Lowered position
-                                BC_C(F("Lowered.  Pausing for settle..."));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Lowered.  Pausing for settle..."); &__c[0];})))));
                                 ulSettleStart = millis();
-                                iCycle = CYCLE_SETTLE;
+                                iCycle = 3;
                                 //myservo.write(90);
                         }
                         break;
 
-                case CYCLE_SETTLE:
+                case 3:
 
                         if (millis() - ulSettleStart > ulSettleDur)
                         {
                                 // We've reached the end of our settling duration
-                                BC_C(F("Settle Pause Finished.  Ready to Expose."));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Settle Pause Finished.  Ready to Expose."); &__c[0];})))));
                                 BC_F();
-                                iCycle = CYCLE_EXPOSE;
+                                iCycle = 4;
                                 DLP = true;
                                 SetDLP(DLP);
                         }
                         break;
 
-                case CYCLE_RELEASE:
+                case 5:
 
                         //      if(iSlideStatus==SLIDE_ARRIVED){
                         // We've reached the closed position
-                        BC_C(F("Released, Shutter Closed"));
-                        BC_C(F("Raising Platform to next layer position + clearance Gap."));
+                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Released, Shutter Closed"); &__c[0];})))));
+                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Raising Platform to next layer position + clearance Gap."); &__c[0];})))));
                         iTargetPos = iNextCurePos + iReadyGap; // Never lower with a part in process!
                         if (iTargetPos < 0)
                                 iTargetPos = 0;
                         setZSpeed(iRaiseSpeed);
-                        iZStatus = Z_MOVING;
-                        iCycle = CYCLE_UP;
+                        iZStatus = 0;
+                        iCycle = 6;
                         DLP = false;
                         SetDLP(DLP);
                         //      }
                         break;
 
-                case CYCLE_UP:
+                case 6:
                         if (iCurPos == iTargetPos)
                         {
                                 // We've reached the Raised position
-                                BC_C(F("Raised.  Pausing for breathe..."));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Raised.  Pausing for breathe..."); &__c[0];})))));
                                 ulBreatheStart = millis();
-                                iCycle = CYCLE_BREATHE;
+                                iCycle = 7;
                                 //myservo.write(0);
                         }
                         break;
 
-                case CYCLE_BREATHE:
+                case 7:
                         if (millis() - ulBreatheStart > ulBreatheDur)
                         {
                                 // We've reached the end of our breathing duration
-                                BC_C(F("Breathe Pause Finished.  Opening Shutter."));
+                                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Breathe Pause Finished.  Opening Shutter."); &__c[0];})))));
                                 //        iSlideSpeed = iSlideOpenSpeed;
                                 //        iSlideTargetPos = SLIDEOPEN;
                                 //        iSlideStatus = SLIDE_POWERED;
-                                iCycle = CYCLE_OPEN;
+                                iCycle = 1;
                         }
                         break;
 
-                case CYCLE_FINISH:
+                case 8:
                         //      if(iSlideStatus==SLIDE_ARRIVED){
                         // We've reached the closed position
-                        BC_C(F("Released"));
-                        BC_C(F("Raising Platform to final position."));
+                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Released"); &__c[0];})))));
+                        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Raising Platform to final position."); &__c[0];})))));
                         if (iNextCurePos > iCurPos)
                                 iTargetPos = iNextCurePos; // Never lower with a part in process!
                         setZSpeed(iRaiseSpeed);
-                        iZStatus = Z_MOVING;
-                        iCycle = CYCLE_OFF;
+                        iZStatus = 0;
+                        iCycle = 0;
                         //      }
                         DLP = false;
                         SetDLP(DLP);
@@ -903,10 +889,10 @@ void HandleBuildCycles()
                         //projectorSerial.write("V99S0002");//poweroff
                         break;
 
-                case CYCLE_EXPOSE:
+                case 4:
                         break;
 
-                case CYCLE_OFF:
+                case 0:
                         if (iCurPos == iTargetPos && bEnableManual == false)
                         {
                                 // We've reached the Raised position, last step of the F command
@@ -933,24 +919,24 @@ void setupIO()
         // PCintPort::attachInterrupt(PROJECTOR_RX, &projectorRxChange, CHANGE);
         // pinMode(PROJECTOR_TX, OUTPUT);
 
-        pinMode(B_DOWN, INPUT_PULLUP);     // DOWN
+        pinMode(A0 /*21*/, 0x2); // DOWN
         // digitalWrite(B_DOWN, HIGH); // Set pull up resistor
-        pinMode(B_UP, INPUT_PULLUP);       // UP
+        pinMode(A1 /*20*/, 0x2); // UP
         // digitalWrite(B_UP, HIGH);   // Set pull up resistor
 
-        pinMode(Z_HOME, INPUT_PULLUP);     // Z = zero sensor
+        pinMode(8 /*19*/, 0x2); // Z = zero sensor
         // pinMode(OLED_RESET, OUTPUT);     // Z = zero sensor
         // digitalWrite(Z_HOME, HIGH); // Set pull up resistor
 
-        pinMode(M_ENABLE, OUTPUT);
-        pinMode(Z_STEP, OUTPUT);
-        pinMode(Z_DIR, OUTPUT);
+        pinMode(4, 0x1);
+        pinMode(5, 0x1);
+        pinMode(6, 0x1);
 
         // pinMode(Z_MS1, OUTPUT);
         // pinMode(Z_MS2, OUTPUT);
         // pinMode(Z_MS3, OUTPUT);
         //LEDBREATH_CONFIG
-        pinMode(LEDBreath, OUTPUT);
+        pinMode(11, 0x1);
 
 }
 
@@ -962,15 +948,15 @@ void setupIO()
 //
 void setZero(bool bFromAbove)
 {
-        setZSpeed(Z_RESETSPD);
-        if (digitalRead(Z_HOME))
+        setZSpeed(200);
+        if (digitalRead(8 /*19*/))
         {
                 // Below zero
                 do
                 {
-                        if (digitalRead(Z_HOME) && iTargetPos != iCurPos + 1)
+                        if (digitalRead(8 /*19*/) && iTargetPos != iCurPos + 1)
                                 iTargetPos = iCurPos + 1;
-                } while (digitalRead(Z_HOME));
+                } while (digitalRead(8 /*19*/));
                 do
                 {
                         delay(1);
@@ -983,9 +969,9 @@ void setZero(bool bFromAbove)
                 // Above zero
                 do
                 {
-                        if (!digitalRead(Z_HOME) && iTargetPos != iCurPos - 1)
+                        if (!digitalRead(8 /*19*/) && iTargetPos != iCurPos - 1)
                                 iTargetPos = iCurPos - 1;
-                } while (!digitalRead(Z_HOME));
+                } while (!digitalRead(8 /*19*/));
                 do
                 {
                         delay(1);
@@ -996,9 +982,9 @@ void setZero(bool bFromAbove)
                         return;
                 }
         }
-        BC_C(F("Found Zero at:  "), String(iCurPos));
-        BC_C(F("Reset Zero to:  "), String(iRefZeroOffset));
-        BC_C(F("Difference of:  "), String(iCurPos - iRefZeroOffset));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Found Zero at:  "); &__c[0];})))), String(iCurPos));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Reset Zero to:  "); &__c[0];})))), String(iRefZeroOffset));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Difference of:  "); &__c[0];})))), String(iCurPos - iRefZeroOffset));
         if (bReset)
                 BC_X(iCurPos - iRefZeroOffset);
         else
@@ -1021,20 +1007,20 @@ void updateMotors()
 {
         if (iCurPos > iTargetPos) // We need to head down, -Z
         {
-                digitalWrite(M_ENABLE, LOW);
-                ZStep(Z_STEPDN);
+                digitalWrite(4, 0x0);
+                ZStep(0x1);
         }
         else if (iCurPos < iTargetPos) // We need to head up, +Z
         {
-                digitalWrite(M_ENABLE, LOW);
-                ZStep(Z_STEPUP);
+                digitalWrite(4, 0x0);
+                ZStep(0x0);
         }
-        else if ((iCurPos == iTargetPos) && (iZStatus == Z_MOVING))
+        else if ((iCurPos == iTargetPos) && (iZStatus == 0))
         {
                 delay(8);
                 ZStepRelease();
                 delay(5);
-                iZStatus = Z_BROADCAST;
+                iZStatus = 2;
         }
 }
 
@@ -1054,10 +1040,10 @@ void setZSpeed(int iRPM)
 void ZStepRelease()
 {
         //while(lastStepPulse==HIGH){delay(1);} // wait until step LOW
-        digitalWrite(M_ENABLE, HIGH);
-        digitalWrite(Z_DIR, LOW);
-        digitalWrite(Z_STEP, LOW);
-        lastStepPulse = LOW;
+        digitalWrite(4, 0x1);
+        digitalWrite(6, 0x0);
+        digitalWrite(5, 0x0);
+        lastStepPulse = 0x0;
 }
 
 ///////////////////////////////////////////////////////
@@ -1066,20 +1052,20 @@ void ZStepRelease()
 //
 void ZStep(int iDir)
 {
-        if (lastStepPulse == LOW)
+        if (lastStepPulse == 0x0)
         {
-                digitalWrite(Z_DIR, iDir);
-                digitalWrite(M_ENABLE, LOW);
-                digitalWrite(Z_STEP, HIGH);
-                lastStepPulse = HIGH;
+                digitalWrite(6, iDir);
+                digitalWrite(4, 0x0);
+                digitalWrite(5, 0x1);
+                lastStepPulse = 0x1;
         }
         else
         {
-                digitalWrite(Z_DIR, iDir);
-                digitalWrite(M_ENABLE, LOW);
-                digitalWrite(Z_STEP, LOW);
-                lastStepPulse = LOW;
-                if (iDir == Z_STEPDN)
+                digitalWrite(6, iDir);
+                digitalWrite(4, 0x0);
+                digitalWrite(5, 0x0);
+                lastStepPulse = 0x0;
+                if (iDir == 0x1)
                         iCurPos--;
                 else
                         iCurPos++;
@@ -1163,9 +1149,9 @@ int SerialReadInt()
                         break;
                 }
                 i++;
-                                
+
                 }
-                
+
         }
         if(j>1)//from j = i + 1
         {
@@ -1173,18 +1159,18 @@ int SerialReadInt()
                String time_left = "";
                int t = 0;
                while (j < 31)
-               {        if (str[j] != 'T' && t == 0)
+               { if (str[j] != 'T' && t == 0)
                         {
                                 current_layer += str[j];
                         }
                         else if(str[j] != '\0' && str[i] != '\n')
-                        {       
+                        {
                                 t = j + 1;
                                 time_left += str[t];
                         }
                         else break;
                         j++;
-                        
+
                }
               //Display_logic("Layer:"+current_layer+"\n"+"TimeRemaining:"+time_left,1);
 
@@ -1211,16 +1197,16 @@ void HandleTimedBroadcasts()
 
                 // If we are in a print cycle and the exposure time exceeds the watchdog limit
                 // Then we abort the print cycle
-                if (iCycle != CYCLE_OFF && millis() - ulLastCmdReceivedTime > MAX_EXPOSURE_WATCHDOG)
+                if (iCycle != 0 && millis() - ulLastCmdReceivedTime > 240000 /* 240 seconds*/)
                 {
-                        BC_Q();             // Broadcast Print Cycle Abort Watchdog alert
-                        iCycle = CYCLE_OFF; // abort the print cycle, Stop z axis motion, close the Shutter
-                        iCycle = CYCLE_OFF;
+                        BC_Q(); // Broadcast Print Cycle Abort Watchdog alert
+                        iCycle = 0; // abort the print cycle, Stop z axis motion, close the Shutter
+                        iCycle = 0;
                         //      projectorSerial.write("~PF\r");  // Power down the projector
                         //projectorSerial.write("\r$pow=off#\r");
                         delay(1000);
                         //      iSlideTargetPos = SLIDECLOSED;
-                        while (lastStepPulse == HIGH)
+                        while (lastStepPulse == 0x1)
                         {
                                 delay(1);
                         } // wait until step LOW
@@ -1234,45 +1220,45 @@ void HandleTimedBroadcasts()
 void loadEEPromSettings()
 {
         int schema;
-        EEPROM_readAnything(EE_ADDRESS_SCHEMA, schema);
+        EEPROM_readAnything(0, schema);
 
         // Set defaults
-        iRefZeroOffset = ZHOMEOFFSETDEFAULT;
-        iNativeX = XNATIVEDEFAULT;
-        iNativeY = YNATIVEDEFAULT;
-        iXYPixelSize = XYPSIZEDEFAULT;
-        iHalfLife = HALFLIFEDEFAULT;
+        iRefZeroOffset = 3100;
+        iNativeX = 1024;
+        iNativeY = 768;
+        iXYPixelSize = 100;
+        iHalfLife = 2000 /* Hours before projector lamp output is reduced to 1/2 original value*/;
 
-        if (schema > 99 && schema < EE_SCHEMA)
+        if (schema > 99 && schema < 112)
         { // Load interesting old schema data first
-                EEPROM_readAnything(EE_ADDRESS_Z_HOME, iRefZeroOffset);
-                EEPROM_readAnything(EE_ADDRESS_NATIVEX, iNativeX);
-                EEPROM_readAnything(EE_ADDRESS_NATIVEY, iNativeY);
-                EEPROM_readAnything(EE_ADDRESS_XYPSIZE, iXYPixelSize);
-                EEPROM_readAnything(EE_ADDRESS_HALFLIFE, iHalfLife);
+                EEPROM_readAnything(2, iRefZeroOffset);
+                EEPROM_readAnything(4, iNativeX);
+                EEPROM_readAnything(6, iNativeY);
+                EEPROM_readAnything(8, iXYPixelSize);
+                EEPROM_readAnything(10, iHalfLife);
         }
 
         if (iNativeX < 1024 || iNativeY < 768)
         { //The interesting old data has been corrupted?  Restore defaults
-                iRefZeroOffset = ZHOMEOFFSETDEFAULT;
-                iNativeX = XNATIVEDEFAULT;
-                iNativeY = YNATIVEDEFAULT;
-                iXYPixelSize = XYPSIZEDEFAULT;
-                iHalfLife = HALFLIFEDEFAULT;
+                iRefZeroOffset = 3100;
+                iNativeX = 1024;
+                iNativeY = 768;
+                iXYPixelSize = 100;
+                iHalfLife = 2000 /* Hours before projector lamp output is reduced to 1/2 original value*/;
                 schema = -1; // force storeDefaults()
         }
 
-        if (schema != EE_SCHEMA)
+        if (schema != 112)
         {
                 storeDefaults();
         }
         else
         { // load current defaults
-                EEPROM_readAnything(EE_ADDRESS_Z_HOME, iRefZeroOffset);
-                EEPROM_readAnything(EE_ADDRESS_NATIVEX, iNativeX);
-                EEPROM_readAnything(EE_ADDRESS_NATIVEY, iNativeY);
-                EEPROM_readAnything(EE_ADDRESS_XYPSIZE, iXYPixelSize);
-                EEPROM_readAnything(EE_ADDRESS_HALFLIFE, iHalfLife);
+                EEPROM_readAnything(2, iRefZeroOffset);
+                EEPROM_readAnything(4, iNativeX);
+                EEPROM_readAnything(6, iNativeY);
+                EEPROM_readAnything(8, iXYPixelSize);
+                EEPROM_readAnything(10, iHalfLife);
                 // Add more default loads here...
         }
 }
@@ -1280,44 +1266,44 @@ void loadEEPromSettings()
 void storeDefaults()
 {
         // Default never burned.  Store the defaults
-        EEPROM_writeAnything(EE_ADDRESS_SCHEMA, EE_SCHEMA);
-        EEPROM_writeAnything(EE_ADDRESS_Z_HOME, iRefZeroOffset);
-        EEPROM_writeAnything(EE_ADDRESS_NATIVEX, iNativeX);
-        EEPROM_writeAnything(EE_ADDRESS_NATIVEY, iNativeY);
-        EEPROM_writeAnything(EE_ADDRESS_XYPSIZE, iXYPixelSize);
-        EEPROM_writeAnything(EE_ADDRESS_HALFLIFE, iHalfLife);
+        EEPROM_writeAnything(0, 112);
+        EEPROM_writeAnything(2, iRefZeroOffset);
+        EEPROM_writeAnything(4, iNativeX);
+        EEPROM_writeAnything(6, iNativeY);
+        EEPROM_writeAnything(8, iXYPixelSize);
+        EEPROM_writeAnything(10, iHalfLife);
         // Add more defaults here... Make sure address accounts for size of data stored
 }
 
 void resetFactoryDefaults()
 {
-        iRefZeroOffset = ZHOMEOFFSETDEFAULT;
-        iNativeX = XNATIVEDEFAULT;
-        iNativeY = YNATIVEDEFAULT;
-        iXYPixelSize = XYPSIZEDEFAULT;
-        iHalfLife = HALFLIFEDEFAULT;
+        iRefZeroOffset = 3100;
+        iNativeX = 1024;
+        iNativeY = 768;
+        iXYPixelSize = 100;
+        iHalfLife = 2000 /* Hours before projector lamp output is reduced to 1/2 original value*/;
         storeDefaults();
 }
 
 void storeRefZOffset()
 {
-        EEPROM_writeAnything(EE_ADDRESS_Z_HOME, iRefZeroOffset);
+        EEPROM_writeAnything(2, iRefZeroOffset);
 }
 void storeRefNativeX()
 {
-        EEPROM_writeAnything(EE_ADDRESS_NATIVEX, iNativeX);
+        EEPROM_writeAnything(4, iNativeX);
 }
 void storeRefNativeY()
 {
-        EEPROM_writeAnything(EE_ADDRESS_NATIVEY, iNativeY);
+        EEPROM_writeAnything(6, iNativeY);
 }
 void storeRefXYPixelSize()
 {
-        EEPROM_writeAnything(EE_ADDRESS_XYPSIZE, iXYPixelSize);
+        EEPROM_writeAnything(8, iXYPixelSize);
 }
 void storeHalfLife()
 {
-        EEPROM_writeAnything(EE_ADDRESS_HALFLIFE, iHalfLife);
+        EEPROM_writeAnything(10, iHalfLife);
 }
 
 //////////////////////////////////////////////////////////////
@@ -1341,8 +1327,8 @@ void BC_String(const __FlashStringHelper *s, String sVariable)
 //////////////////////////////////////////////////////////////
 void BC_A()
 {
-        BC_String(F("A1"));
-        BC_C(F("Projector Control:  Available"));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("A1"); &__c[0];})))));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Projector Control:  Available"); &__c[0];})))));
 }
 
 //////////////////////////////////////////////////////////////
@@ -1366,50 +1352,50 @@ void BC_C(const __FlashStringHelper *s, String sVariable)
 //////////////////////////////////////////////////////////////
 void BC_D()
 {
-        BC_String(F("D"), String(iNativeX));
-        BC_C(F("Projector's Native X Resolution: "), String(iNativeX));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("D"); &__c[0];})))), String(iNativeX));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Projector's Native X Resolution: "); &__c[0];})))), String(iNativeX));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_E()
 {
-        BC_String(F("E"), String(iNativeY));
-        BC_C(F("Projector's Native Y Resolution: "), String(iNativeY));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("E"); &__c[0];})))), String(iNativeY));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Projector's Native Y Resolution: "); &__c[0];})))), String(iNativeY));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_F()
 {
-        BC_String(F("F"));
-        BC_C(F("Cycle Finished."));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("F"); &__c[0];})))));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Cycle Finished."); &__c[0];})))));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_H()
 {
-        BC_String(F("H"), String(iXYPixelSize));
-        BC_C(F("Calibrated XY Pixel Size in Microns: "), String(iXYPixelSize));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("H"); &__c[0];})))), String(iXYPixelSize));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Calibrated XY Pixel Size in Microns: "); &__c[0];})))), String(iXYPixelSize));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_I()
 {
-        BC_String(F("I1000"));         //BC_String(F("I635"));
-        BC_C(F("Printer Unit: 1000")); //BC_C(F("Printer Unit: 635"));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("I1000"); &__c[0];}))))); //BC_String(F("I635"));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Printer Unit: 1000"); &__c[0];}))))); //BC_C(F("Printer Unit: 635"));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_J()
 {
-        BC_String(F("J1"));
-        BC_C(F("Shutter Control: Available"));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("J1"); &__c[0];})))));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Shutter Control: Available"); &__c[0];})))));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_K()
 {
-        BC_String(F("K"), String(iHalfLife));
-        BC_C(F("Estimated hours before lamp output is 1/2 of original value: "), String(iHalfLife));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("K"); &__c[0];})))), String(iHalfLife));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Estimated hours before lamp output is 1/2 of original value: "); &__c[0];})))), String(iHalfLife));
 }
 
 //////////////////////////////////////////////////////////////
@@ -1417,16 +1403,16 @@ void BC_L()
 {
         if (iLampHours >= 0 && iProjectorPwr > 0)
         {
-                BC_String(F("L"), String(iLampHours));
-                BC_C(F("Lamp Hours: "), String(iLampHours));
+                BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("L"); &__c[0];})))), String(iLampHours));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Lamp Hours: "); &__c[0];})))), String(iLampHours));
         }
 }
 
 //////////////////////////////////////////////////////////////
 void BC_M()
 {
-        BC_String(F("M"), String(iUpperZLimit));
-        BC_C(F("Maximum Z in PU: "), String(iUpperZLimit));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("M"); &__c[0];})))), String(iUpperZLimit));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Maximum Z in PU: "); &__c[0];})))), String(iUpperZLimit));
 }
 
 //////////////////////////////////////////////////////////////
@@ -1434,22 +1420,22 @@ void BC_P()
 {
         if (iProjectorPwr < 1)
         {
-                BC_String(F("P0"));
-                BC_C(F("Projector is Off"));
+                BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("P0"); &__c[0];})))));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Projector is Off"); &__c[0];})))));
                 //SetDLP(false);
         }
         else
         {
-                BC_String(F("P1"));
-                BC_C(F("Projector is On"));
+                BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("P1"); &__c[0];})))));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Projector is On"); &__c[0];})))));
         }
 }
 
 //////////////////////////////////////////////////////////////
 void BC_Q()
 {
-        BC_String(F("Q"));
-        BC_C(F("Print Cycle ABORT.  Host COMM Lost"));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Q"); &__c[0];})))));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Print Cycle ABORT.  Host COMM Lost"); &__c[0];})))));
 }
 
 //////////////////////////////////////////////////////////////
@@ -1457,13 +1443,13 @@ void BC_R()
 {
         if (bReset)
         {
-                BC_String(F("R0"));
-                BC_C(F("Needs Reset: NO"));
+                BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("R0"); &__c[0];})))));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Needs Reset: NO"); &__c[0];})))));
         }
         else
         {
-                BC_String(F("R1"));
-                BC_C(F("Needs Reset: YES"));
+                BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("R1"); &__c[0];})))));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Needs Reset: YES"); &__c[0];})))));
         }
 }
 
@@ -1478,47 +1464,47 @@ void BC_R()
 //////////////////////////////////////////////////////////////
 void BC_U(int iFault)
 {
-        BC_String(F("U"), String(iFault));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("U"); &__c[0];})))), String(iFault));
         if (iFault == 1)
-                BC_C(F("ERROR:  Runaway X Mtr, Counter Clockwise"));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("ERROR:  Runaway X Mtr, Counter Clockwise"); &__c[0];})))));
         if (iFault == 2)
-                BC_C(F("ERROR:  Runaway X Mtr, Clockwise"));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("ERROR:  Runaway X Mtr, Clockwise"); &__c[0];})))));
         if (iFault == 3)
-                BC_C(F("ERROR:  Runaway X Mtr, Bad Sensor"));
+                BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("ERROR:  Runaway X Mtr, Bad Sensor"); &__c[0];})))));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_V()
 {
-        BC_String(F("V1 1 2"));
-        BC_String(F("WB9C1"));
-        BC_C(F("Nepho3D Firmware version 1.1.2 running on a Nepho3D Model"));
-        BC_C(F("Copyright 2018, 2019 Nepho3D, LLC"));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("V1 1 2"); &__c[0];})))));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("WB9C1"); &__c[0];})))));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Nepho3D Firmware version 1.1.2 running on a Nepho3D Model"); &__c[0];})))));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Copyright 2018, 2019 Nepho3D, LLC"); &__c[0];})))));
        // BC_C(F("B9Creations(tm) and B9Creator(tm) are trademarks of B9Creations, LLC"));
        // BC_C(F("This work is licensed under the Creative Commons Attribution-ShareAlike 3.0 Unported License."));
        // BC_C(F("To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/3.0/"));
-        BC_C(F("For updates and to download the lastest version, visit http://Nepho3d.com"));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("For updates and to download the lastest version, visit http://Nepho3d.com"); &__c[0];})))));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_X(int iDiff)
 {
-        BC_String(F("X"), String(iDiff));
-        BC_C(F("Reset Compelete with Z Diff of:"), String(iDiff));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("X"); &__c[0];})))), String(iDiff));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Reset Compelete with Z Diff of:"); &__c[0];})))), String(iDiff));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_Y()
 {
-        BC_String(F("Y"), String(iRefZeroOffset));
-        BC_C(F("Current Z Home Value:"), String(iRefZeroOffset));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Y"); &__c[0];})))), String(iRefZeroOffset));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Current Z Home Value:"); &__c[0];})))), String(iRefZeroOffset));
 }
 
 //////////////////////////////////////////////////////////////
 void BC_Z()
 {
-        BC_String(F("Z"), String(iCurPos));
-        BC_C(F("Current Z Position is: "), String(iCurPos));
+        BC_String((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Z"); &__c[0];})))), String(iCurPos));
+        BC_C((reinterpret_cast<const __FlashStringHelper *>((__extension__({static const char __c[] __attribute__((__progmem__)) = ("Current Z Position is: "); &__c[0];})))), String(iCurPos));
 }
 // define the DLP mode
 void SetDLP(bool DLP)
@@ -1546,13 +1532,13 @@ void SetDLP(bool DLP)
 void LED_Breath(int FLAG_raspiStartup)
 {
         //
-        for (int value = 1 ; (value < 255) && (FLAG_raspiStartup == 0); value++){  
-                analogWrite(LEDBreath, value);
+        for (int value = 1 ; (value < 255) && (FLAG_raspiStartup == 0); value++){
+                analogWrite(11, value);
                 delay(5);
         }
-        for (int value = 255 ; (value >1) && (FLAG_raspiStartup == 0); value--){  
-                analogWrite(LEDBreath, value);  
+        for (int value = 255 ; (value >1) && (FLAG_raspiStartup == 0); value--){
+                analogWrite(11, value);
                 delay(5);
-        }  
-        analogWrite(LEDBreath, 255);
+        }
+        analogWrite(11, 255);
 }
