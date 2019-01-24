@@ -171,7 +171,7 @@ int iXYPixelSize = 0;
 int iHalfLife = 2000;
 
 // Z Axis Position & Movement variables
-#define ZHOMEOFFSETDEFAULT 3100
+#define ZHOMEOFFSETDEFAULT 2100
 int iRefZeroOffset = -1; // Load persistant value from EEPROM during setup
 int iUpperZLimit = 32000;
 int iLowerZLimit = -500;

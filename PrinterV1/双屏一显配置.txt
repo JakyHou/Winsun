@@ -3,3 +3,7 @@
 3	./LCD35_show
 4	lcd_setup/setup.sh
 5	reboot
+
+6	HDMI œ‘ æ√¸¡Ó £®framebuffer command£©
+	cat [path] /dev/fb0
+	cat /dev/zero /dev/fb0

@@ -1223,7 +1223,7 @@ void loadEEPromSettings()
         EEPROM_readAnything(0, schema);
 
         // Set defaults
-        iRefZeroOffset = 3100;
+        iRefZeroOffset = 2100;
         iNativeX = 1024;
         iNativeY = 768;
         iXYPixelSize = 100;
@@ -1240,7 +1240,7 @@ void loadEEPromSettings()
 
         if (iNativeX < 1024 || iNativeY < 768)
         { //The interesting old data has been corrupted?  Restore defaults
-                iRefZeroOffset = 3100;
+                iRefZeroOffset = 2100;
                 iNativeX = 1024;
                 iNativeY = 768;
                 iXYPixelSize = 100;
@@ -1277,7 +1277,7 @@ void storeDefaults()
 
 void resetFactoryDefaults()
 {
-        iRefZeroOffset = 3100;
+        iRefZeroOffset = 2100;
         iNativeX = 1024;
         iNativeY = 768;
         iXYPixelSize = 100;
