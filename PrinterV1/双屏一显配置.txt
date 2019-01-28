@@ -5,5 +5,6 @@
 5	reboot
 
 6	HDMI ÏÔÊ¾ÃüÁî £¨framebuffer command£©
-	cat [path] /dev/fb0
-	cat /dev/zero /dev/fb0
+	fbset -g 1280 800 1280 800 24
+	cat [path] > /dev/fb0
+	cat /dev/zero > /dev/fb0

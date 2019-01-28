@@ -1,0 +1,6 @@
+[folder name]
+comment = share folder
+path = [share path]
+browseable = yes
+writable = yes
+public = yes
