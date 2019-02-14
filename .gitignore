@@ -2,3 +2,6 @@
 *.un~
 *.bak
 *.swp
+*.o
+Outputs/
+

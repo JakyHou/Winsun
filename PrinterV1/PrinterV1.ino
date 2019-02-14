@@ -23,7 +23,7 @@ pinName         pinTo
 7               MS2
 8               MS1
 9               EN
-10              
+10
 11              MOSI
 12              MISO
 13              SCK
@@ -40,8 +40,8 @@ A5              SCL
  * C Request current Status
  * D Set Delay (Breathe) time (ms)
  * E Set "settle" Delay time(ms)
- * F Release and move to final position at input 
- * G Goto Z position at input 
+ * F Release and move to final position at input
+ * G Goto Z position at input
  * H Reset the projectors native X Resolution //
  * I Reset the projectors native Y Resolution //
  * J Set Cycle Ready Gap
@@ -64,8 +64,8 @@ A5              SCL
  * $ Reset Projector's Half Life value //
  * # \\
  * @ Set DLP current
- * 
- * 
+ *
+ *
  * */
 
 // EEPROM (used for storing calibrated Z home offset
@@ -249,7 +249,7 @@ int FLAG_raspiStartup =0;
 //                 display.setTextColor(WHITE);
 //                 display.setCursor(0, 0);
 //                 display.println(characters);
-//                 display.display(); 
+//                 display.display();
 //                 characters = "";
 //         }
 void setup()
@@ -332,8 +332,8 @@ void setup()
 void loop()
 {
 
-        LED_Breath(FLAG_raspiStartup);  
-        
+        LED_Breath(FLAG_raspiStartup);
+
         // Handle Manual input events
         if (bEnableManual == true)
         {
@@ -466,7 +466,7 @@ void serialEvent()
                         case 'F':
                                 bEnableManual = false;
                                 iLastCuredPos = iNextCurePos;
-                                iNextCurePos = SerialReadInt();
+                                iNextCurePos = SerialReadInt() * 0.8;
                                 BC_C(F("Command: Release and move to final position at: "), String(iNextCurePos));
                                 //        iSlideSpeed = iSlideCloseSpeed;
                                 //        iSlideTargetPos = SLIDECLOSED;
@@ -482,7 +482,7 @@ void serialEvent()
                                 {
                                         delay(1);
                                 } // wait until step LOW
-                                iTargetPos = i;
+                                iTargetPos = i * 0.8;
 
                                 if (iTargetPos > iUpperZLimit)
                                         iTargetPos = iUpperZLimit;
@@ -771,7 +771,7 @@ void serialEvent()
                                 i = SerialReadInt();
                                 if (i >= 0 && i <= 255)
                                 {
-                                        
+
                                         if (0 == i || i == current[2])
                                         {
                                             DLP = (i == 0)?false:true;
@@ -1019,14 +1019,16 @@ void setZero(bool bFromAbove)
 // Called 933.3 times per second when z speed is 140 rpm
 void updateMotors()
 {
+        digitalWrite(M_ENABLE, LOW);
+        while(digitalRead(M_ENABLE));
         if (iCurPos > iTargetPos) // We need to head down, -Z
         {
-                digitalWrite(M_ENABLE, LOW);
+                // digitalWrite(M_ENABLE, LOW);
                 ZStep(Z_STEPDN);
         }
         else if (iCurPos < iTargetPos) // We need to head up, +Z
         {
-                digitalWrite(M_ENABLE, LOW);
+                // digitalWrite(M_ENABLE, LOW);
                 ZStep(Z_STEPUP);
         }
         else if ((iCurPos == iTargetPos) && (iZStatus == Z_MOVING))
@@ -1069,14 +1071,14 @@ void ZStep(int iDir)
         if (lastStepPulse == LOW)
         {
                 digitalWrite(Z_DIR, iDir);
-                digitalWrite(M_ENABLE, LOW);
+                // digitalWrite(M_ENABLE, LOW);
                 digitalWrite(Z_STEP, HIGH);
                 lastStepPulse = HIGH;
         }
         else
         {
                 digitalWrite(Z_DIR, iDir);
-                digitalWrite(M_ENABLE, LOW);
+                // digitalWrite(M_ENABLE, LOW);
                 digitalWrite(Z_STEP, LOW);
                 lastStepPulse = LOW;
                 if (iDir == Z_STEPDN)
@@ -1163,9 +1165,9 @@ int SerialReadInt()
                         break;
                 }
                 i++;
-                                
+
                 }
-                
+
         }
         if(j>1)//from j = i + 1
         {
@@ -1178,13 +1180,13 @@ int SerialReadInt()
                                 current_layer += str[j];
                         }
                         else if(str[j] != '\0' && str[i] != '\n')
-                        {       
+                        {
                                 t = j + 1;
                                 time_left += str[t];
                         }
                         else break;
                         j++;
-                        
+
                }
               //Display_logic("Layer:"+current_layer+"\n"+"TimeRemaining:"+time_left,1);
 
@@ -1517,8 +1519,8 @@ void BC_Y()
 //////////////////////////////////////////////////////////////
 void BC_Z()
 {
-        BC_String(F("Z"), String(iCurPos));
-        BC_C(F("Current Z Position is: "), String(iCurPos));
+        BC_String(F("Z"), String(iCurPos*0.8));
+        BC_C(F("Current Z Position is: "), String(iCurPos*0.8));
 }
 // define the DLP mode
 void SetDLP(bool DLP)
@@ -1538,7 +1540,7 @@ void SetDLP(bool DLP)
          Wire.write(byte(0x90));//LED_Enable 0x10 write 0x0 to turn off all colors of LEDs
          Wire.write(byte(0x00));
          Wire.endTransmission(true);
-        //  Serial.println("I2C third"); 
+        //  Serial.println("I2C third");
          //BC_V();
         }
 }
@@ -1546,13 +1548,13 @@ void SetDLP(bool DLP)
 void LED_Breath(int FLAG_raspiStartup)
 {
         //
-        for (int value = 1 ; (value < 255) && (FLAG_raspiStartup == 0); value++){  
+        for (int value = 1 ; (value < 255) && (FLAG_raspiStartup == 0); value++){
                 analogWrite(LEDBreath, value);
                 delay(5);
         }
-        for (int value = 255 ; (value >1) && (FLAG_raspiStartup == 0); value--){  
-                analogWrite(LEDBreath, value);  
+        for (int value = 255 ; (value >1) && (FLAG_raspiStartup == 0); value--){
+                analogWrite(LEDBreath, value);
                 delay(5);
-        }  
+        }
         analogWrite(LEDBreath, 255);
 }
