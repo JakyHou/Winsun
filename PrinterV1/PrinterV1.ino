@@ -8,6 +8,7 @@
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
+//log 2019/2/14 add *0.8 Unit
 //#include <Adafruit_SSD1306.h>
 //#include <stringz.h>
 /*******************************PinMap***************************************
